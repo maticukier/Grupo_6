@@ -23,3 +23,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+@Preview()
+@Composable
+fun DecoratedComposablePreview() {
+    LoginScreen()
+}
+
