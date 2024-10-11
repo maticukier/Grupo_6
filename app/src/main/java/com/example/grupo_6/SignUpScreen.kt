@@ -3,7 +3,6 @@ package com.example.grupo_6
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -16,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,10 +23,11 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun SignUpScreen() {
+    var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var loginResponse by remember { mutableStateOf("") }
+    var responseMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -43,9 +42,9 @@ fun LoginScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Título "Sign In"
+        // Título "Sign Up"
         Text(
-            text = "Sign In",
+            text = "Sign Up",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
@@ -53,17 +52,26 @@ fun LoginScreen(navController: NavController) {
 
         // Subtítulo
         Text(
-            text = "Enter your email and password",
+            text = "Create your account",
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de email
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth(0.8f)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
         // Campo de usuario
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Email") },
+            label = { Text("Username") },
             modifier = Modifier.fillMaxWidth(0.8f)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -76,71 +84,74 @@ fun LoginScreen(navController: NavController) {
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(0.8f)
         )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // "Forgot Password?" (alineado a la derecha)
-        Text(
-            text = "Forgot Password?",
-            fontSize = 14.sp,
-            modifier = Modifier.align(Alignment.End).padding(end = 40.dp)
-        )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón de iniciar sesión
+        // Botón de registro
         Button(
-            onClick = { login(username, password) { response ->
-                loginResponse = response
-                Log.d("LoginResponse", response) // Log para la respuesta
+            onClick = { signUp(email, username, password) { response ->
+                responseMessage = response
+                Log.d("SignUpResponse", response) // Log para la respuesta
             } },
             modifier = Modifier.fillMaxWidth(0.8f)
         ) {
-            Text("Log In", fontSize = 18.sp)
+            Text("Sign Up", fontSize = 18.sp)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Mensaje de respuesta
-        // Text(text = loginResponse, fontSize = 14.sp)
-
-        // "Don’t have an account? Signup"
-        Text(
-            text = "Don't have an account? Signup",
-            fontSize = 14.sp,
-            modifier = Modifier.clickable {
-                navController.navigate("signup")
-            }
-        )
+        Text(text = responseMessage, fontSize = 14.sp)
     }
 }
 
-private fun login(username: String, password: String, onResponse: (String) -> Unit) {
+private fun signUp(email: String, username: String, password: String, onResponse: (String) -> Unit) {
     val client = OkHttpClient()
-    val json = """{"username": "$username", "password": "$password"}"""
+    val json = """
+        {
+            "email": "$email",
+            "username": "$username",
+            "password": "$password",
+            "name": {
+                "firstname": "John",
+                "lastname": "Doe"
+            },
+            "address": {
+                "city": "kilcoole",
+                "street": "7835 new road",
+                "number": 3,
+                "zipcode": "12926-3874",
+                "geolocation": {
+                    "lat": "-37.3159",
+                    "long": "81.1496"
+                }
+            },
+            "phone": "1-570-236-7033"
+        }
+    """.trimIndent()
     val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json)
     val request = Request.Builder()
-        .url("https://fakestoreapi.com/auth/login")
+        .url("https://fakestoreapi.com/users")
         .post(requestBody)
         .build()
 
     CoroutineScope(Dispatchers.IO).launch {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Manejar error
-                Log.e("LoginError", "Error: ${e.message}") // Log para error
+                Log.e("SignUpError", "Error: ${e.message}") // Log para error
                 onResponse("Error: ${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!it.isSuccessful) {
-                        Log.e("LoginError", "Unexpected code $it") // Log para código inesperado
+                        Log.e("SignUpError", "Unexpected code $it") // Log para código inesperado
                         onResponse("Unexpected code $it")
                         return
                     }
 
                     // Procesar la respuesta
                     val responseData = it.body?.string() ?: "No response"
-                    Log.d("LoginResponse", responseData) // Log para respuesta exitosa
+                    Log.d("SignUpResponse", responseData) // Log para respuesta exitosa
                     onResponse(responseData)
                 }
             }
