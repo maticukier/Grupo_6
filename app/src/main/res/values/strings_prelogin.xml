@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prelogin_header">Welcome to our store</string>}
+    <string name="prelogin_description">Get your groceries in as fast as one hour</string>
+    <string name="prelogin_getStarted">Get Started</string>
+</resources>
