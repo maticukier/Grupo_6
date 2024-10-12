@@ -100,6 +100,6 @@ fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -
 @Preview(showBackground = true)
 @Composable
 fun FooterPreview() {
-    // Provide a dummy NavHostController for preview purposes
+
     Footer(navController = rememberNavController())
 }

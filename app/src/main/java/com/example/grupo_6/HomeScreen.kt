@@ -28,29 +28,45 @@ fun HomeScreen(navController: NavHostController) {
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top // Align items to the top
+            verticalArrangement = Arrangement.Top
         ) {
             Header(title = "Shop")
-            Spacer(modifier = Modifier.height(8.dp)) // Add some spacing if needed
+            Spacer(modifier = Modifier.height(8.dp))
+            CityTitle(cityName = "Dhaka, Banasree")
             BannerImage()
-            Spacer(modifier = Modifier.height(16.dp)) // Add some spacing between sections
-            SectionTitle(title = "Exclusive Offer")
+            Spacer(modifier = Modifier.height(16.dp))
+            SectionTitle(title = "Exclusive Offer", actionTitle = "See All")
             ProductList(products = exclusiveOfferProducts)
-            Spacer(modifier = Modifier.height(16.dp)) // Add some spacing between sections
-            SectionTitle(title = "Best Sellings")
+            Spacer(modifier = Modifier.height(16.dp))
+            SectionTitle(title = "Best Sellings", actionTitle = "See All")
             ProductList(products = bestSellingProducts)
-            Spacer(modifier = Modifier.weight(1f)) // Push the footer to the bottom
+            Spacer(modifier = Modifier.weight(1f))
         }
         Footer(navController = navController, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
-
+@Composable
+fun CityTitle(cityName: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 0.dp), // Remove vertical padding
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = cityName,
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(vertical = 0.dp) // Remove vertical padding from Text
+        )
+    }
+}
 
 @Composable
 fun BannerImage() {
     Image(
-        painter = painterResource(id = R.drawable.banner1),
+        painter = painterResource(id = R.drawable.banner),
         contentDescription = "Banner Image",
         modifier = Modifier
             .fillMaxWidth()
@@ -59,13 +75,26 @@ fun BannerImage() {
 }
 
 @Composable
-fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        fontSize = 20.sp,
-        color = Color.Black,
-        modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
-    )
+fun SectionTitle(title: String, actionTitle: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            color = Color.Black
+        )
+        Text(
+            text = actionTitle,
+            fontSize = 14.sp,
+            color = Color.Green,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
 }
 
 @Composable
@@ -150,7 +179,7 @@ val exclusiveOfferProducts = listOf(
 
 val bestSellingProducts = listOf(
     Product("Bell Pepper Red", "1kg,Priceg", "$4.99", R.drawable.tomato),
-    Product("Ginger ", "250mg,Priceg", "$2.99", R.drawable.ginger)
+    Product("Ginger", "250mg,Priceg", "$2.99", R.drawable.ginger)
 )
 
 @Preview(showBackground = true)

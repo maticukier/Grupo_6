@@ -14,27 +14,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Composable
 fun Header(title: String) {
-    Row(
+    Box(
         modifier = Modifier
             .width(412.dp)
             .height(64.dp)
             .background(Color(0xFFFCFCFC))
             .padding(start = 2.dp),
-        verticalAlignment = Alignment.CenterVertically
+        contentAlignment = Alignment.Center
     ) {
-        Icon(
-            imageVector = Icons.Default.Menu,
-            contentDescription = "Navigation Icon",
-            tint = Color.Black
-        )
-        Spacer(modifier = Modifier.width(16.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = "Navigation Icon",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+        }
         Text(
             text = title,
             fontSize = 20.sp,
-            color = Color.Black
+            color = Color.Black,
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
@@ -42,5 +47,5 @@ fun Header(title: String) {
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
-    Header(title = "Preview Title")
+    Header(title = "Shop")
 }
