@@ -7,11 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.NavHostController
+
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.grupo_6.ui.theme.Grupo_6Theme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +54,12 @@ fun AppNavigation() {
 
         // Pantalla de Sign Up
         composable("signup") { SignUpScreen() }
+
+        composable("shop") { HomeScreen(navController) }
+        //composable("explore") { ExploreScreen(navController) }
+        //composable("cart") { CartScreen(navController) }
+        //composable("favorite") { FavoriteScreen(navController) }
+        //composable("account") { AccountScreen(navController) }
     }
 }
 

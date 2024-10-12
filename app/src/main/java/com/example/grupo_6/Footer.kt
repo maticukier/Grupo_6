@@ -2,9 +2,10 @@ package com.example.grupo_6
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,11 +14,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun Footer() {
+fun Footer(navController: NavHostController, modifier: Modifier = Modifier) {
+    var selectedRoute by remember { mutableStateOf("shop") }
+
     Row(
-        modifier = Modifier
+        modifier = modifier
             .width(414.dp)
             .height(92.dp)
             .background(Color(0xFFFCFCFC))
@@ -26,36 +31,76 @@ fun Footer() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        FooterItem(iconResId = R.drawable.shop, label = "Shop")
-        FooterItem(iconResId = R.drawable.search, label = "Explore")
-        FooterItem(iconResId = R.drawable.cart, label = "Cart")
-        FooterItem(iconResId = R.drawable.favorite, label = "Favourite")
-        FooterItem(iconResId = R.drawable.account, label = "Account")
+        FooterItem(
+            iconResId = R.drawable.shop,
+            label = "Shop",
+            isSelected = selectedRoute == "shop"
+        ) {
+            selectedRoute = "shop"
+            navController.navigate("shop")
+        }
+        FooterItem(
+            iconResId = R.drawable.search,
+            label = "Explore",
+            isSelected = selectedRoute == "explore"
+        ) {
+            selectedRoute = "explore"
+            navController.navigate("explore")
+        }
+        FooterItem(
+            iconResId = R.drawable.cart,
+            label = "Cart",
+            isSelected = selectedRoute == "cart"
+        ) {
+            selectedRoute = "cart"
+            navController.navigate("cart")
+        }
+        FooterItem(
+            iconResId = R.drawable.favorite,
+            label = "Favourite",
+            isSelected = selectedRoute == "favorite"
+        ) {
+            selectedRoute = "favorite"
+            navController.navigate("favorite")
+        }
+        FooterItem(
+            iconResId = R.drawable.account,
+            label = "Account",
+            isSelected = selectedRoute == "account"
+        ) {
+            selectedRoute = "account"
+            navController.navigate("account")
+        }
     }
 }
 
 @Composable
-fun FooterItem(iconResId: Int, label: String) {
+fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -> Unit) {
+    val iconColor = if (isSelected) Color.Green else Color.Black
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable(onClick = onClick)
     ) {
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
-            modifier = Modifier.size(24.dp) // Adjust the size as needed
+            modifier = Modifier
+                .size(24.dp) // Adjust the size as needed
+                .background(iconColor)
         )
         Text(
             text = label,
             fontSize = 12.sp,
-            color = Color.Black
+            color = iconColor
         )
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun FooterPreview() {
-    Footer()
+    // Provide a dummy NavHostController for preview purposes
+    Footer(navController = rememberNavController())
 }

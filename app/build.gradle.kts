@@ -70,5 +70,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation ("androidx.compose.ui:ui:1.0.5")
+    implementation ("androidx.compose.material:material:1.0.5")
+    implementation ("androidx.compose.ui:ui-tooling:1.0.5")
+    implementation ("androidx.compose.foundation:foundation:1.0.5")
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 }
