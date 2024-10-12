@@ -23,7 +23,7 @@ fun Splash() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.splash))
+            .background(colorResource(id = R.color.Splash))
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

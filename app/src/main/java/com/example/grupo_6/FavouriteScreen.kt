@@ -167,7 +167,7 @@ data class FavouriteProduct(val name: String, val description: String, val price
 val FavouriteProducts = listOf(
     Product("Sprite Can", "325ml , Price", "$1.50", R.drawable.sprite),
     Product("Diet Coke Can", "355ml , Price", "$1.99", R.drawable.coca_light),
-    Product("Apple & Grape Juice ", "2l ,", "$15.50", R.drawable.jugo),
+    Product("Apple & Grape Juice ", "2l , Price", "$15.50", R.drawable.jugo),
     Product("Coca Cola Can", "325ml , Price", "$4.99", R.drawable.coca),
     Product("Pepsi Can", "330ml , Price", "$4.99", R.drawable.pepsi),
 )

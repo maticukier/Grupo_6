@@ -51,8 +51,8 @@ android {
 
 dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.1")
-    implementation(libs.okhttp) // Asegúrate de que esto esté definido en libs.versions.toml
-    implementation(libs.coroutines.core) // Cambié a "core" para ser consistente
+    implementation(libs.okhttp)
+    implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -71,12 +71,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation ("androidx.compose.ui:ui:1.0.5")
-    implementation ("androidx.compose.material:material:1.0.5")
-    implementation ("androidx.compose.ui:ui-tooling:1.0.5")
-    implementation ("androidx.compose.foundation:foundation:1.0.5")
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("com.google.android.material:material:1.9.0")
-
+    implementation("androidx.compose.ui:ui:1.0.5")
+    implementation("androidx.compose.material:material:1.0.5")
+    implementation("androidx.compose.ui:ui-tooling:1.0.5")
+    implementation("androidx.compose.foundation:foundation:1.0.5")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.material:material:1.9.0")
 }

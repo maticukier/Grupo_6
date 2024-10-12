@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -91,7 +92,7 @@ fun SectionTitle(title: String, actionTitle: String) {
         Text(
             text = actionTitle,
             fontSize = 14.sp,
-            color = Color.Green,
+            color = colorResource(id = R.color.Splash),
             modifier = Modifier.align(Alignment.CenterVertically)
         )
     }
@@ -158,7 +159,7 @@ fun ProductCard(product: Product) {
                     .size(40.dp) // Adjust the size as needed
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.greenbutton), // Replace with your PNG button resource
+                    painter = painterResource(id = R.drawable.add), // Replace with your PNG button resource
                     contentDescription = "Add Button",
                     modifier = Modifier
                         .fillMaxSize()
@@ -173,13 +174,13 @@ data class Product(val name: String, val description: String, val price: String,
 
 // Separate lists for Exclusive Offer and Best Sellings products
 val exclusiveOfferProducts = listOf(
-    Product("Organic Bananas", "7pcs,Priceg", "$4.99", R.drawable.banana),
-    Product("Red Apple", "1kg,Priceg", "$4.99", R.drawable.apple)
+    Product("Organic Bananas", "7pcs, Priceg", "$4.99", R.drawable.banana),
+    Product("Red Apple", "1kg, Priceg", "$4.99", R.drawable.apple)
 )
 
 val bestSellingProducts = listOf(
-    Product("Bell Pepper Red", "1kg,Priceg", "$4.99", R.drawable.tomato),
-    Product("Ginger", "250mg,Priceg", "$2.99", R.drawable.ginger)
+    Product("Bell Pepper Red", "1kg, Priceg", "$4.99", R.drawable.tomato),
+    Product("Ginger", "250mg, Priceg", "$2.99", R.drawable.ginger)
 )
 
 @Preview(showBackground = true)
