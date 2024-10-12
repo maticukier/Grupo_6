@@ -86,9 +86,8 @@ fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
-            modifier = Modifier
-                .size(24.dp) // Adjust the size as needed
-                .background(iconColor)
+            modifier = Modifier.size(24.dp), // Adjust the size as needed
+            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(iconColor)
         )
         Text(
             text = label,
