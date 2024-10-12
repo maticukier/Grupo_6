@@ -42,7 +42,7 @@ fun HomeScreen(navController: NavHostController) {
             ProductList(products = bestSellingProducts)
             Spacer(modifier = Modifier.weight(1f))
         }
-        Footer(navController = navController, modifier = Modifier.align(Alignment.BottomCenter))
+        Footer(navController = navController, selectedRoute = "shop", modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 

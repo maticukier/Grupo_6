@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun Footer(navController: NavHostController, modifier: Modifier = Modifier) {
-    var selectedRoute by remember { mutableStateOf("shop") }
+fun Footer(navController: NavHostController, selectedRoute: String, modifier: Modifier = Modifier) {
+    var selectedRouteState by remember { mutableStateOf(selectedRoute) }
 
     Row(
         modifier = modifier
@@ -34,41 +34,41 @@ fun Footer(navController: NavHostController, modifier: Modifier = Modifier) {
         FooterItem(
             iconResId = R.drawable.shop,
             label = "Shop",
-            isSelected = selectedRoute == "shop"
+            isSelected = selectedRouteState == "shop"
         ) {
-            selectedRoute = "shop"
+            selectedRouteState = "shop"
             navController.navigate("shop")
         }
         FooterItem(
             iconResId = R.drawable.search,
             label = "Explore",
-            isSelected = selectedRoute == "explore"
+            isSelected = selectedRouteState == "explore"
         ) {
-            selectedRoute = "explore"
+            selectedRouteState = "explore"
             navController.navigate("explore")
         }
         FooterItem(
             iconResId = R.drawable.cart,
             label = "Cart",
-            isSelected = selectedRoute == "cart"
+            isSelected = selectedRouteState == "cart"
         ) {
-            selectedRoute = "cart"
+            selectedRouteState = "cart"
             navController.navigate("cart")
         }
         FooterItem(
             iconResId = R.drawable.favorite,
             label = "Favourite",
-            isSelected = selectedRoute == "favorite"
+            isSelected = selectedRouteState == "favorite"
         ) {
-            selectedRoute = "favorite"
+            selectedRouteState = "favorite"
             navController.navigate("favorite")
         }
         FooterItem(
             iconResId = R.drawable.account,
             label = "Account",
-            isSelected = selectedRoute == "account"
+            isSelected = selectedRouteState == "account"
         ) {
-            selectedRoute = "account"
+            selectedRouteState = "account"
             navController.navigate("account")
         }
     }
@@ -100,6 +100,5 @@ fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -
 @Preview(showBackground = true)
 @Composable
 fun FooterPreview() {
-
-    Footer(navController = rememberNavController())
+    Footer(navController = rememberNavController(), selectedRoute = "shop")
 }

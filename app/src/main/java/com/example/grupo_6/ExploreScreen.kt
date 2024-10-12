@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +35,7 @@ fun ExploreScreen(navController: NavHostController) {
             ExploreGrid()
             Spacer(modifier = Modifier.weight(1f))
         }
-        Footer(navController = navController, modifier = Modifier.align(Alignment.BottomCenter))
+        Footer(navController = navController, selectedRoute = "explore", modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -102,7 +101,7 @@ val variedColors = listOf(
     Color(0xFFE8F5E9),
     Color(0xFFFFE0B2),
     Color(0xFFFFCDD2),
-    Color(0xFFD7BDE2) ,
+    Color(0xFFD7BDE2),
     Color(0xFFFFF9C4),
     Color(0xFFB2EBF2)
 )
