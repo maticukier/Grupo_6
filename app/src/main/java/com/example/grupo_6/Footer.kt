@@ -58,7 +58,7 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
         FooterItem(
             iconResId = R.drawable.favorite,
             label = "Favourite",
-            isSelected = selectedRouteState == "favorite"
+            isSelected = selectedRouteState == "favourite"
         ) {
             selectedRouteState = "favorite"
             navController.navigate("favorite")
@@ -76,7 +76,7 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
 
 @Composable
 fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -> Unit) {
-    val iconColor = if (isSelected) Color.Green else Color.Black
+    val iconColor = if (isSelected) com.example.grupo_6.ui.theme.Splash else Color.Black
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
