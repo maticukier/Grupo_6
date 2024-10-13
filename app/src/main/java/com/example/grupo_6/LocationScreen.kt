@@ -135,7 +135,7 @@ fun LocationScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /* Handle logout */ },
+                    onClick = { navController.navigate("shop") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(100.dp)
