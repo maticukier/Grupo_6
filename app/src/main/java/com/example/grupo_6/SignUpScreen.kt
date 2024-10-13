@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -30,15 +28,18 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var responseMessage by remember { mutableStateOf("") }
 
     val poppins = FontFamily(
@@ -67,7 +68,7 @@ fun SignUpScreen() {
         Text(
             text = "Sign Up",
             fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.ExtraBold,
             fontFamily = poppins,
         )
         Spacer(modifier = Modifier.height(5.dp))
@@ -96,6 +97,12 @@ fun SignUpScreen() {
             value = username,
             onValueChange = { username = it },
             modifier = Modifier.fillMaxWidth(0.9f),
+            textStyle = androidx.compose.ui.text.TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color.Black
+            ),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -121,6 +128,21 @@ fun SignUpScreen() {
             value = email,
             onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth(0.9f),
+            textStyle = androidx.compose.ui.text.TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color.Black
+            ),
+            trailingIcon = {
+                if (email.endsWith("@gmail.com")) {
+                    Image(
+                        painter = painterResource(id = R.drawable.tick),
+                        contentDescription = "Tick",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -143,7 +165,23 @@ fun SignUpScreen() {
             value = password,
             onValueChange = { password = it },
             modifier = Modifier.fillMaxWidth(0.9f),
-            visualTransformation = PasswordVisualTransformation(),
+            textStyle = androidx.compose.ui.text.TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color.Black
+            ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible) R.drawable.visual_on else R.drawable.visual_off
+                Image(
+                    painter = painterResource(id = image),
+                    contentDescription = "Toggle Password Visibility",
+                    modifier = Modifier
+                        .clickable { passwordVisible = !passwordVisible }
+                        .size(20.dp)
+                )
+            },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -173,7 +211,9 @@ fun SignUpScreen() {
                 fontWeight = FontWeight.Bold,
                 fontFamily = poppins,
                 color = Color(0xFF4CAF50),
-                modifier = Modifier.clickable { /* Acción para mostrar términos y políticas */ }
+                modifier = Modifier.clickable {
+                    navController.navigate("signIn")
+                }
             )
         }
 
@@ -202,19 +242,23 @@ fun SignUpScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { signUp(email, username, password) { response ->
-                responseMessage = response
-                Log.d("SignUpResponse", response)
-            } },
+            onClick = {
+                signUp(username, email, password) { response ->
+                    responseMessage = response
+                    Log.d("SignUpResponse", response)
+                    if (response.contains("success")) { // Assuming a successful response contains "success"
+                        navController.navigate("login")
+                    }
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource (id = R.color.Splash)),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
             shape = RoundedCornerShape(18.dp)
-        )
-        {
+        ) {
             Text("Sign Up", fontSize = 18.sp)
         }
 
@@ -238,7 +282,9 @@ fun SignUpScreen() {
                 fontWeight = FontWeight.Bold,
                 fontFamily = poppins,
                 color = Color(0xFF4CAF50),
-                modifier = Modifier.clickable { /* Acción para navegar a Sign In */ }
+                modifier = Modifier.clickable {
+                    navController.navigate("login")
+                }
             )
         }
     }
@@ -300,5 +346,6 @@ private fun signUp(username: String,email: String, password: String, onResponse:
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignUpScreen() {
-    SignUpScreen()
+    val navController = rememberNavController()
+    SignUpScreen(navController = navController)
 }
