@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -79,7 +80,7 @@ fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color) 
                     .height(120.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = category.name, fontSize = 16.sp, color = Color.Black)
+            Text(text = category.name, fontSize = 16.sp, color = Color.Black, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -88,7 +89,8 @@ data class Category(val name: String, val imageResId: Int)
 
 // Sample list of categories for the Explore screen
 val categoryList = listOf(
-    Category("Fresh fruits and vegetables", R.drawable.freshfruits),
+    Category("Frash Fruits\n" +
+            "& Vegetable", R.drawable.freshfruits),
     Category("Cooking oil & ghee", R.drawable.oil),
     Category("Meat & Fish", R.drawable.meat),
     Category("Bakery & Snacks", R.drawable.snacks),

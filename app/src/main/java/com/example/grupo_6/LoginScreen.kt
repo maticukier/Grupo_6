@@ -24,13 +24,16 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -39,20 +42,26 @@ import androidx.navigation.compose.rememberNavController
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var loginResponse by remember { mutableStateOf("") }
+    var loginMessage by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogMessage by remember { mutableStateOf("") }
     val poppins = FontFamily(
         androidx.compose.ui.text.font.Font(R.font.poppins_regular),
     )
-
+    // Usuarios predefinidos
+    val users = listOf(
+        User("user1@gmail.com", "password1"),
+        User("user2@gmail.com", "password2"),
+        User("user3@gmail.com", "password3")
+    )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(25.dp),
-
-
-        ) {
+    ) {
         Spacer(modifier = Modifier.height(50.dp)) // Ajustar espacio
 
 
@@ -172,32 +181,65 @@ fun LoginScreen(navController: NavController) {
         HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
         Spacer(modifier = Modifier.height(25.dp))
 
-
-        // Botón de iniciar sesión
         Button(
             onClick = {
-                login(email, password) { response ->
-                    loginResponse = response
-                    Log.d("LoginResponse", response) // Log para la respuesta
-                    if (response.contains("success")) { // Assuming a successful response contains "success"
-                        navController.navigate("explore")
-                    }
+                val loginResult = login(email, password, users)
+                if (loginResult.first) {
+                    navController.navigate("explore")
+                } else {
+                    showDialog = true
+                    dialogMessage = loginResult.second
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
+                .height(56.dp)
+                .padding(horizontal = 16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
-            shape = RoundedCornerShape(18.dp)
+            shape = RoundedCornerShape(28.dp)
         ) {
             Text("Log In", fontSize = 18.sp)
         }
 
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Diálogo personalizado para mostrar errores
+        if (showDialog) {
+            Dialog(onDismissRequest = { showDialog = false }) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Error",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = Color.Red
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = dialogMessage,
+                            fontSize = 16.sp,
+                            color = Color.Black
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = { showDialog = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                            shape = RoundedCornerShape(20.dp)
+                        ) {
+                            Text("OK", color = Color.White)
+                        }
+                    }
+                }
+            }
+        }
 
         // Mensaje de respuesta
         Row(
@@ -265,9 +307,53 @@ private fun login(email: String, password: String, onResponse: (String) -> Unit)
         })
     }
 }
+private fun login(email: String, password: String, onResponse: (Boolean, String) -> Unit) {
+    val client = OkHttpClient()
+    val json = """{"email": "$email", "password": "$password"}"""
+    val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json)
+    val request = Request.Builder()
+        .url("https://fakestoreapi.com/auth/login")
+        .post(requestBody)
+        .build()
+
+    CoroutineScope(Dispatchers.IO).launch {
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("LoginError", "Error: ${e.message}")
+                CoroutineScope(Dispatchers.Main).launch {
+                    onResponse(false, "Login failed: ${e.message}")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    val responseData = it.body?.string() ?: "No response"
+                    Log.d("LoginResponse", responseData)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if (it.isSuccessful && responseData.contains("token")) {
+                            onResponse(true, "Login successful!")
+                        } else {
+                            onResponse(false, "Login failed: Invalid credentials")
+                        }
+                    }
+                }
+            }
+        })
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
     val navController = rememberNavController()
     LoginScreen(navController = navController)
+}
+data class User(val email: String, val password: String)
+
+fun login(email: String, password: String, users: List<User>): Pair<Boolean, String> {
+    val user = users.find { it.email == email && it.password == password }
+    return if (user != null) {
+        Pair(true, "Login successful!")
+    } else {
+        Pair(false, "Invalid email or password")
+    }
 }

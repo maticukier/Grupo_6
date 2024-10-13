@@ -59,7 +59,7 @@ fun AppNavigation() {
         composable("explore") { ExploreScreen(navController) }
         //composable("cart") { CartScreen(navController) }
         composable("favorite") { FavouriteScreen(navController) }
-        //composable("account") { AccountScreen(navController) }
+        composable("account") { AccountScreen(navController) }
     }
 }
 
