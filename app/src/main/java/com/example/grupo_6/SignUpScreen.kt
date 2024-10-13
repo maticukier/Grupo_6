@@ -6,107 +6,245 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
+
 
 @Composable
 fun SignUpScreen() {
-    var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var responseMessage by remember { mutableStateOf("") }
 
+    val poppins = FontFamily(
+        androidx.compose.ui.text.font.Font(R.font.poppins_regular),
+    )
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(25.dp),
+
     ) {
+        Spacer(modifier = Modifier.height(50.dp)) // Ajustar espacio
+
         // Logo
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo), // Tu logo aquí
             contentDescription = "Logo",
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier
+                .size(55.dp)
+                .align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(90.dp))
 
         // Título "Sign Up"
         Text(
             text = "Sign Up",
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = poppins,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         // Subtítulo
         Text(
-            text = "Create your account",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal
+            text = "Enter your credentials to continue",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = poppins,
+            color = Color(0xff7c7c7c),
         )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo de email
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(0.8f)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         // Campo de usuario
+
+        Text(
+            text = "Username",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = poppins,
+            color = Color(0xff7c7c7c),
+        )
+
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth(0.8f)
+            modifier = Modifier.fillMaxWidth(0.9f),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,   // Color del fondo cuando está enfocado
+                unfocusedContainerColor = Color.Transparent  // Color del fondo cuando no está enfocado
+            )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
+
+
+        HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+        Spacer(modifier = Modifier.height(25.dp))
+        // Campo de email
+        Text(
+            text = "Email",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = poppins,
+            color = Color(0xff7c7c7c),
+
+        )
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            modifier = Modifier.fillMaxWidth(0.9f),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,   // Color del fondo cuando está enfocado
+                unfocusedContainerColor = Color.Transparent  // Color del fondo cuando no está enfocado
+            )
+        )
+        HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+        Spacer(modifier = Modifier.height(25.dp))
 
         // Campo de contraseña
+        Text(
+            text = "Password",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = poppins,
+            color = Color(0xff7c7c7c),
+        )
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(0.9f),
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(0.8f)
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,   // Color del fondo cuando está enfocado
+                unfocusedContainerColor = Color.Transparent  // Color del fondo cuando no está enfocado
+            )
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Botón de registro
+        // Términos y políticas
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "By continuing you agree to our ",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color(0xff7c7c7c),
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.width(3.dp))
+            Text(
+                text = "Terms of Service",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color(0xFF4CAF50),
+                modifier = Modifier.clickable { /* Acción para mostrar términos y políticas */ }
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "and",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color(0xff7c7c7c),
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.width(3.dp))
+            Text(
+                text = "Privacy Policy",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color(0xFF4CAF50),
+                modifier = Modifier.clickable { /* Acción para mostrar términos y políticas */ }
+            )
+        }
+
+
+        Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = { signUp(email, username, password) { response ->
                 responseMessage = response
-                Log.d("SignUpResponse", response) // Log para la respuesta
+                Log.d("SignUpResponse", response)
             } },
-            modifier = Modifier.fillMaxWidth(0.8f)
-        ) {
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource (id = R.color.Splash)),
+            shape = RoundedCornerShape(18.dp)
+        )
+        {
             Text("Sign Up", fontSize = 18.sp)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Mensaje de respuesta
-        Text(text = responseMessage, fontSize = 14.sp)
+        // Texto de "Already have an account?"
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Already have an account?",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color.Black,
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "Sign in",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = poppins,
+                color = Color(0xFF4CAF50),
+                modifier = Modifier.clickable { /* Acción para navegar a Sign In */ }
+            )
+        }
     }
 }
 
-private fun signUp(email: String, username: String, password: String, onResponse: (String) -> Unit) {
+private fun signUp(username: String,email: String, password: String, onResponse: (String) -> Unit) {
     val client = OkHttpClient()
     val json = """
         {
@@ -139,21 +277,19 @@ private fun signUp(email: String, username: String, password: String, onResponse
     CoroutineScope(Dispatchers.IO).launch {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("SignUpError", "Error: ${e.message}") // Log para error
+                Log.e("SignUpError", "Error: ${e.message}")
                 onResponse("Error: ${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!it.isSuccessful) {
-                        Log.e("SignUpError", "Unexpected code $it") // Log para código inesperado
+                        Log.e("SignUpError", "Unexpected code $it")
                         onResponse("Unexpected code $it")
                         return
                     }
-
-                    // Procesar la respuesta
                     val responseData = it.body?.string() ?: "No response"
-                    Log.d("SignUpResponse", responseData) // Log para respuesta exitosa
+                    Log.d("SignUpResponse", responseData)
                     onResponse(responseData)
                 }
             }
@@ -163,6 +299,6 @@ private fun signUp(email: String, username: String, password: String, onResponse
 
 @Preview(showBackground = true)
 @Composable
-fun SignupPreview() {
+fun PreviewSignUpScreen() {
     SignUpScreen()
 }
