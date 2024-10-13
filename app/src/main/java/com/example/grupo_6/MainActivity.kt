@@ -55,6 +55,9 @@ fun AppNavigation() {
         // Pantalla de Sign Up
         composable("signup") { SignUpScreen(navController) }
 
+        // Pantalla de Location
+        composable("location") { LocationScreen(navController) }
+
         composable("shop") { HomeScreen(navController) }
         composable("explore") { ExploreScreen(navController) }
         //composable("cart") { CartScreen(navController) }

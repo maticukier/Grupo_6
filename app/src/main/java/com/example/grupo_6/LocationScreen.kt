@@ -3,7 +3,9 @@ package com.example.grupo_6
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,78 +42,109 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun LocationScreen(){
-    //Columna Grande con contenidos
-    Column{
-        //Columna del icono
-        Column(
+fun LocationScreen(navController: NavController) {
+    Column {
+        // Row for the back arrow
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
-                .background(Color(255,255,255)),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.illustration),
-                contentDescription = "Logo",
-                modifier = Modifier.size(200.dp)
-            )
-        }
-        //Columna del texto
-        Column(modifier = Modifier
-            .height(200.dp)
-            .background(Color(255,255,255)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Text("Select Your Location", style =
-                TextStyle(
-                    fontSize = 26.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Switch your location to stay in tune with what's happening in your area", style =
-                TextStyle(
-                    fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center
-                )
-            )
-        }
-        //Columna del DropDown
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(Color(255,255,255)),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .height(50.dp)
+                .background(Color.White),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Your Zone", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
-            DropdownMenuExample("Select your zone")
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Your Area", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
-            DropdownMenuExample("Select your area")
+            Box(
+                modifier = Modifier
+                    .padding(15.dp) // Add padding to move the arrow away from the edge
+                    .size(50.dp)
+                    .clickable { navController.navigate("login") }
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.flechaatras),
+                    contentDescription = "Back Arrow",
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
 
-        //Columna del boton
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(Color(255,255,255)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = { /* Handle logout */ },
+        // Rest of the content
+        Column {
+            //Columna del icono
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash), contentColor = Color.White),
-                shape = RoundedCornerShape(18.dp)
-            ){
-                Text("Submit", fontSize = 18.sp)
+                    .height(300.dp)
+                    .background(Color(255, 255, 255)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.illustration),
+                    contentDescription = "Logo",
+                    modifier = Modifier.size(200.dp)
+                )
+            }
+            //Columna del texto
+            Column(
+                modifier = Modifier
+                    .height(200.dp)
+                    .background(Color(255, 255, 255)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Select Your Location", style =
+                    TextStyle(
+                        fontSize = 26.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    "Switch your location to stay in tune with what's happening in your area", style =
+                    TextStyle(
+                        fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center
+                    )
+                )
+            }
+            //Columna del DropDown
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color(255, 255, 255)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Your Zone", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
+                DropdownMenuExample("Select your zone")
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Your Area", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
+                DropdownMenuExample("Select your area")
+            }
+
+            //Columna del boton
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color(255, 255, 255)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = { /* Handle logout */ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .padding(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash), contentColor = Color.White),
+                    shape = RoundedCornerShape(18.dp)
+                ) {
+                    Text("Submit", fontSize = 18.sp)
+                }
             }
         }
     }
@@ -181,5 +214,6 @@ fun DropdownMenuExample(placeholder: String) {
 @Preview
 @Composable
 fun LocationPreview() {
-    LocationScreen()
+    val navController = rememberNavController()
+    LocationScreen(navController = navController)
 }

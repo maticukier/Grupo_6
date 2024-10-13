@@ -185,7 +185,7 @@ fun LoginScreen(navController: NavController) {
             onClick = {
                 val loginResult = login(email, password, users)
                 if (loginResult.first) {
-                    navController.navigate("explore")
+                    navController.navigate("location")
                 } else {
                     showDialog = true
                     dialogMessage = loginResult.second
