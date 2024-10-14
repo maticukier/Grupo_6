@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,25 +16,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
+// Explora los productos en una rejilla
 @Composable
-fun ExploreScreen(navController: NavHostController) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
+    Scaffold(
+        bottomBar = { Footer(navController = navController, selectedRoute = "Explore", isDarkMode = isDarkMode) }
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            Header(title = "Explore")
+            // Pasamos isDarkMode al Header
+            Header(title = "Explore", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
             ExploreGrid()
-            Spacer(modifier = Modifier.weight(1f))
         }
-        Footer(navController = navController, selectedRoute = "explore", modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -85,12 +87,17 @@ fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color) 
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ExploreScreenPreview() {
+    ExploreScreen(navController = rememberNavController(), isDarkMode = false)
+}
+
+// Clase de datos y listas
 data class Category(val name: String, val imageResId: Int)
 
-// Sample list of categories for the Explore screen
 val categoryList = listOf(
-    Category("Frash Fruits\n" +
-            "& Vegetable", R.drawable.freshfruits),
+    Category("Frash Fruits & Vegetable", R.drawable.freshfruits),
     Category("Cooking oil & ghee", R.drawable.oil),
     Category("Meat & Fish", R.drawable.meat),
     Category("Bakery & Snacks", R.drawable.snacks),
@@ -98,7 +105,6 @@ val categoryList = listOf(
     Category("Beverages", R.drawable.bebidas)
 )
 
-// List of varied colors
 val variedColors = listOf(
     Color(0xFFE8F5E9),
     Color(0xFFFFE0B2),
@@ -108,7 +114,7 @@ val variedColors = listOf(
     Color(0xFFB2EBF2)
 )
 
-// Extension function to darken a color
+// Función de extensión para oscurecer un color
 fun Color.darken(factor: Float): Color {
     return Color(
         red = (red * (1 - factor)).coerceIn(0f, 1f),
@@ -116,10 +122,4 @@ fun Color.darken(factor: Float): Color {
         blue = (blue * (1 - factor)).coerceIn(0f, 1f),
         alpha = alpha
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExploreScreenPreview() {
-    ExploreScreen(navController = rememberNavController())
 }

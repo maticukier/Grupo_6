@@ -18,14 +18,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun Footer(navController: NavHostController, selectedRoute: String, modifier: Modifier = Modifier) {
+fun Footer(navController: NavHostController, selectedRoute: String, isDarkMode: Boolean, modifier: Modifier = Modifier) {
     var selectedRouteState by remember { mutableStateOf(selectedRoute) }
+
+    val backgroundColor = if (isDarkMode) Color(0xFF1E1E1E) else Color(0xFFFCFCFC)
+    val textColor = if (isDarkMode) Color.White else Color.Black
 
     Row(
         modifier = modifier
-            .width(414.dp)
+            .fillMaxWidth()
             .height(92.dp)
-            .background(Color(0xFFFCFCFC))
+            .background(backgroundColor)
             .padding(horizontal = 16.dp)
             .zIndex(15f),
         verticalAlignment = Alignment.CenterVertically,
@@ -34,7 +37,8 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
         FooterItem(
             iconResId = R.drawable.shop,
             label = "Shop",
-            isSelected = selectedRouteState == "shop"
+            isSelected = selectedRouteState == "shop",
+            textColor = textColor
         ) {
             selectedRouteState = "shop"
             navController.navigate("shop")
@@ -42,7 +46,8 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
         FooterItem(
             iconResId = R.drawable.search,
             label = "Explore",
-            isSelected = selectedRouteState == "explore"
+            isSelected = selectedRouteState == "explore",
+            textColor = textColor
         ) {
             selectedRouteState = "explore"
             navController.navigate("explore")
@@ -50,7 +55,8 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
         FooterItem(
             iconResId = R.drawable.cart,
             label = "Cart",
-            isSelected = selectedRouteState == "cart"
+            isSelected = selectedRouteState == "cart",
+            textColor = textColor
         ) {
             selectedRouteState = "cart"
             navController.navigate("cart")
@@ -58,15 +64,17 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
         FooterItem(
             iconResId = R.drawable.favorite,
             label = "Favourite",
-            isSelected = selectedRouteState == "favourite"
+            isSelected = selectedRouteState == "favourite",
+            textColor = textColor
         ) {
-            selectedRouteState = "favorite"
-            navController.navigate("favorite")
+            selectedRouteState = "favourite"
+            navController.navigate("favourite")
         }
         FooterItem(
             iconResId = R.drawable.account,
             label = "Account",
-            isSelected = selectedRouteState == "account"
+            isSelected = selectedRouteState == "account",
+            textColor = textColor
         ) {
             selectedRouteState = "account"
             navController.navigate("account")
@@ -75,8 +83,8 @@ fun Footer(navController: NavHostController, selectedRoute: String, modifier: Mo
 }
 
 @Composable
-fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -> Unit) {
-    val iconColor = if (isSelected) com.example.grupo_6.ui.theme.Splash else Color.Black
+fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, textColor: Color, onClick: () -> Unit) {
+    val iconColor = if (isSelected) com.example.grupo_6.ui.theme.Splash else textColor
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,19 +94,20 @@ fun FooterItem(iconResId: Int, label: String, isSelected: Boolean, onClick: () -
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
-            modifier = Modifier.size(24.dp), // Adjust the size as needed
+            modifier = Modifier.size(24.dp),
             colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(iconColor)
         )
         Text(
             text = label,
             fontSize = 12.sp,
-            color = iconColor
+            color = textColor
         )
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun FooterPreview() {
-    Footer(navController = rememberNavController(), selectedRoute = "shop")
+    Footer(navController = rememberNavController(), selectedRoute = "shop", isDarkMode = false)
 }

@@ -19,9 +19,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AccountScreen(navController: NavHostController) {
+fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "account") }
+        bottomBar = {  Footer(navController = navController, selectedRoute = "someRoute", isDarkMode = isDarkMode) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -30,8 +30,7 @@ fun AccountScreen(navController: NavHostController) {
                 .padding(horizontal = 16.dp)
         ) {
             // Reutilizamos el Header
-            Header("Account")
-
+            Header(title = "Account", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -86,7 +85,7 @@ fun AccountScreen(navController: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("Dark mode", style = MaterialTheme.typography.bodyLarge)
-                CustomSwitch()
+                CustomSwitch(checked = isDarkMode, onCheckedChange = { toggleDarkMode(it) })
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -177,5 +176,17 @@ fun CustomSwitch(
 @Preview(showBackground = true)
 @Composable
 fun AccountScreenPreview() {
-    AccountScreen(navController = rememberNavController())
+    var isDarkMode by remember { mutableStateOf(false) }
+    AccountScreen(navController = rememberNavController(), isDarkMode = isDarkMode, toggleDarkMode = { isDarkMode = it })
+}
+object Account {
+    private var darkMode: Boolean = false // Estado inicial
+
+    fun isDarkMode(): Boolean {
+        return darkMode
+    }
+
+    fun toggleDarkMode(isEnabled: Boolean) {
+        darkMode = isEnabled
+    }
 }

@@ -7,6 +7,9 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,13 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Header(title: String) {
+fun Header(title: String, isDarkMode: Boolean) {
+    val backgroundColor = if (isDarkMode) Color(0xFF1E1E1E) else Color(0xFFFCFCFC)
+    val textColor = if (isDarkMode) Color.White else Color.Black
+
     Box(
         modifier = Modifier
-            .width(412.dp)
+            .fillMaxWidth()
             .height(64.dp)
-            .background(Color(0xFFFCFCFC))
-            .padding(start = 2.dp),
+            .background(backgroundColor)
+            .padding(start = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -31,14 +37,14 @@ fun Header(title: String) {
             Icon(
                 imageVector = Icons.Default.Menu,
                 contentDescription = "Navigation Icon",
-                tint = Color.Black
+                tint = textColor
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
         Text(
             text = title,
             fontSize = 20.sp,
-            color = Color.Black,
+            color = textColor,
             modifier = Modifier.align(Alignment.Center)
         )
     }
@@ -47,5 +53,5 @@ fun Header(title: String) {
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
-    Header(title = "Shop")
+    Header(title = "Shop", isDarkMode = false)
 }
