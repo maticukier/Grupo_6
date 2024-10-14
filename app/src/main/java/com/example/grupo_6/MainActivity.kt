@@ -51,6 +51,7 @@ fun AppNavigation(isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
             composable("explore") {
                 ExploreScreen(navController = navController, isDarkMode = isDarkMode)
             }
+            composable("productDetail"){ ProductDetailScreen(navController, isDarkMode = isDarkMode) }
 
             composable("favourite") {
                 FavouriteScreen(navController = navController, isDarkMode = isDarkMode)

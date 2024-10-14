@@ -43,10 +43,10 @@ fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
             BannerImage()
             Spacer(modifier = Modifier.height(16.dp))
             SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor) // Color dinámico para la sección
-            ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode) // Color dinámico para los productos
+            ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController) // Color dinámico para los productos
             Spacer(modifier = Modifier.height(16.dp))
             SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor)
-            ProductList(products = bestSellingProducts, isDarkMode = isDarkMode)
+            ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController)
             Spacer(modifier = Modifier.weight(1f))
         }
         Footer(navController = navController, selectedRoute = "shop", isDarkMode = isDarkMode, modifier = Modifier.align(Alignment.BottomCenter))
@@ -101,7 +101,7 @@ fun SectionTitle(title: String, actionTitle: String, textColor: Color) {
 }
 
 @Composable
-fun ProductList(products: List<Product>, isDarkMode: Boolean) {
+fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: NavHostController) {
     val cardBackgroundColor = if (isDarkMode) Color.DarkGray else Color.White
     val textColor = if (isDarkMode) Color.White else Color.Black
 
@@ -114,7 +114,7 @@ fun ProductList(products: List<Product>, isDarkMode: Boolean) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 productPair.forEach { product ->
-                    ProductCard(product = product, cardBackgroundColor = cardBackgroundColor, textColor = textColor)
+                    ProductCard(product = product, cardBackgroundColor = cardBackgroundColor, textColor = textColor, navController = navController)
                 }
             }
         }
@@ -122,14 +122,17 @@ fun ProductList(products: List<Product>, isDarkMode: Boolean) {
 }
 
 @Composable
-fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color) {
+fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, navController : NavHostController) {
     Card(
         modifier = Modifier
             .width(173.32.dp)
             .height(248.51.dp)
             .padding(8.dp)
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp)),
-        colors = CardDefaults.cardColors(
+            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .clickable {
+                navController.navigate("productDetail")
+            },
+            colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor // Color dinámico de la tarjeta
         )
     ) {
