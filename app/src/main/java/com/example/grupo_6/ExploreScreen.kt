@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,16 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
-// Explora los productos en una rejilla
 @Composable
 fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
+    var searchQuery by remember { mutableStateOf("") }
+    val filteredCategories = categoryList.filter { it.name.contains(searchQuery, ignoreCase = true) }
+
     Scaffold(
         bottomBar = { Footer(navController = navController, selectedRoute = "Explore", isDarkMode = isDarkMode) }
     ) { innerPadding ->
@@ -34,23 +33,57 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // Pasamos isDarkMode al Header
             Header(title = "Explore", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
-            ExploreGrid()
+            SearchBar(searchQuery) { query -> searchQuery = query }
+            Spacer(modifier = Modifier.height(8.dp))
+            ExploreGrid(filteredCategories)
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExploreGrid() {
+fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
+    TextField(
+        value = searchQuery,
+        onValueChange = onSearchQueryChange,
+        placeholder = { Text("Search store") },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.lupa), // Use painterResource for PNG
+                contentDescription = "Search Icon",
+                modifier = Modifier.size(24.dp) // Set the size of the icon
+            )
+        },
+        trailingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ajustes), // Use painterResource for PNG
+                contentDescription = "Adjust Icon",
+                modifier = Modifier.size(24.dp) // Set the size of the icon
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = Color(0xFFF0F0F0), // Set the background color to a soft grey
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(8.dp)
+    )
+}
+
+@Composable
+fun ExploreGrid(categories: List<Category>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        itemsIndexed(categoryList) { index, category ->
+        itemsIndexed(categories) { index, category ->
             val backgroundColor = variedColors[index % variedColors.size]
             val borderColor = backgroundColor.darken(0.2f)
             ExploreCard(category = category, backgroundColor = backgroundColor, borderColor = borderColor)
@@ -97,7 +130,7 @@ fun ExploreScreenPreview() {
 data class Category(val name: String, val imageResId: Int)
 
 val categoryList = listOf(
-    Category("Frash Fruits & Vegetable", R.drawable.freshfruits),
+    Category("Fresh Fruits & Vegetable", R.drawable.freshfruits),
     Category("Cooking oil & ghee", R.drawable.oil),
     Category("Meat & Fish", R.drawable.meat),
     Category("Bakery & Snacks", R.drawable.snacks),
