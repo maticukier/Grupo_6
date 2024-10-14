@@ -157,14 +157,14 @@ fun ProductCard(product: Product) {
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
                     .size(40.dp) // Adjust the size as needed
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.add), // Replace with your PNG button resource
-                    contentDescription = "Add Button",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable { /* Handle button click */ }
-                )
+            ) {Image(
+                painter = painterResource(id = R.drawable.add), // Replace with your PNG button resource
+                contentDescription = "Add Button",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { /* Handle button click */ }
+            )
+
             }
         }
     }

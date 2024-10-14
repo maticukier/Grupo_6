@@ -12,7 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,7 @@ fun AppNavigation() {
 
         composable("shop") { HomeScreen(navController) }
         composable("explore") { ExploreScreen(navController) }
-        //composable("cart") { CartScreen(navController) }
+        composable("cart") { CartScreen(navController) }
         composable("favorite") { FavouriteScreen(navController) }
         composable("account") { AccountScreen(navController) }
     }
