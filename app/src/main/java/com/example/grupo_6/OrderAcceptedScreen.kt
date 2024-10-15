@@ -61,7 +61,7 @@ fun OrderAcceptedScreen(
                         contentDescription = "Bolsa de Alimentos",
                         modifier = Modifier
                             .size(260.dp)
-                            .offset(y = 40.dp) // Move the Image slightly down
+                            .offset(x = (-20).dp, y = 40.dp) // Move the Image slightly to the left and down
                     )
                     Spacer(modifier = Modifier.height(90.dp))
                     Text(
