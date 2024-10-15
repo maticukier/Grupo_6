@@ -22,34 +22,40 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
     val textColor = if (isDarkMode) Color.White else Color.Black
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor) // Fondo dinámico según el modo oscuro
+            .background(backgroundColor)
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 56.dp), // Add padding to the bottom to avoid overlap with the footer
+                .padding(bottom = 56.dp),
             verticalArrangement = Arrangement.Top
         ) {
             item {
-                Header(title = "Shop", isDarkMode = isDarkMode) // Pasamos isDarkMode al Header
+                Header(title = "Shop", isDarkMode = isDarkMode)
                 Spacer(modifier = Modifier.height(8.dp))
-                CityTitle(cityName = "Dhaka, Banasree", textColor = textColor) // Color dinámico para el título de la ciudad
+                CityTitle(cityName = "Dhaka, Banasree", textColor = textColor, textStyle = textStyle)
                 BannerImage()
                 Spacer(modifier = Modifier.height(16.dp))
-                SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor) // Color dinámico para la sección
-                ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController) // Color dinámico para los productos
+                SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor, textStyle = textStyle)
+                ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController, textStyle = textStyle)
                 Spacer(modifier = Modifier.height(16.dp))
-                SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor)
-                ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController)
+                SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor, textStyle = textStyle)
+                ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController, textStyle = textStyle)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -58,7 +64,7 @@ fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
 }
 
 @Composable
-fun CityTitle(cityName: String, textColor: Color) {
+fun CityTitle(cityName: String, textColor: Color, textStyle: TextStyle) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,11 +74,11 @@ fun CityTitle(cityName: String, textColor: Color) {
         Text(
             text = cityName,
             fontSize = 18.sp,
-            color = textColor
+            color = textColor,
+            style = textStyle
         )
     }
 }
-
 @Composable
 fun BannerImage() {
     Image(
@@ -85,7 +91,7 @@ fun BannerImage() {
 }
 
 @Composable
-fun SectionTitle(title: String, actionTitle: String, textColor: Color) {
+fun SectionTitle(title: String, actionTitle: String, textColor: Color, textStyle: TextStyle) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -96,18 +102,20 @@ fun SectionTitle(title: String, actionTitle: String, textColor: Color) {
         Text(
             text = title,
             fontSize = 20.sp,
-            color = textColor // Color dinámico
+            color = textColor,
+            style = textStyle
         )
         Text(
             text = actionTitle,
             fontSize = 14.sp,
-            color = textColor // Color dinámico
+            color = textColor,
+            style = textStyle
         )
     }
 }
 
 @Composable
-fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: NavHostController) {
+fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: NavHostController, textStyle: TextStyle) {
     val cardBackgroundColor = if (isDarkMode) Color.DarkGray else Color.White
     val textColor = if (isDarkMode) Color.White else Color.Black
 
@@ -115,12 +123,12 @@ fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: Nav
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        itemsIndexed(products.chunked(2)) { index, productPair ->
+        itemsIndexed(products.chunked(2)) { _, productPair ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 productPair.forEach { product ->
-                    ProductCard(product = product, cardBackgroundColor = cardBackgroundColor, textColor = textColor, navController = navController)
+                    ProductCard(product = product, cardBackgroundColor = cardBackgroundColor, textColor = textColor, navController = navController, textStyle = textStyle)
                 }
             }
         }
@@ -128,7 +136,7 @@ fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: Nav
 }
 
 @Composable
-fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, navController: NavHostController) {
+fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, navController: NavHostController, textStyle: TextStyle) {
     Card(
         modifier = Modifier
             .width(173.32.dp)
@@ -139,7 +147,7 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, 
                 navController.navigate("productDetail")
             },
         colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor // Color dinámico de la tarjeta
+            containerColor = cardBackgroundColor
         )
     ) {
         Box(
@@ -156,15 +164,20 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, 
                         .height(120.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = product.name, fontSize = 16.sp, color = textColor) // Texto dinámico
-                Text(text = product.description, fontSize = 12.sp, color = Color.Gray)
+                Text(text = product.name, fontSize = 16.sp, color = textColor, style = textStyle)
+                Text(
+                    text = product.description,
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    style = textStyle
+                )
             }
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(8.dp)
             ) {
-                Text(text = product.price, fontSize = 16.sp, color = textColor) // Texto dinámico
+                Text(text = product.price, fontSize = 16.sp, color = textColor, style = textStyle)
             }
             Box(
                 modifier = Modifier

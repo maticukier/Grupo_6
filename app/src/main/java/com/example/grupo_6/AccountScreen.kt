@@ -12,6 +12,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,8 +23,11 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
+
     Scaffold(
-        bottomBar = {  Footer(navController = navController, selectedRoute = "account", isDarkMode = isDarkMode) }
+        bottomBar = { Footer(navController = navController, selectedRoute = "account", isDarkMode = isDarkMode) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -29,7 +35,6 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            // Reutilizamos el Header
             Header(title = "Account", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -45,7 +50,7 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             "Afsar Hossen",
-                            style = MaterialTheme.typography.titleMedium.copy(
+                            style = textStyle.copy(
                                 fontWeight = FontWeight.Bold // Aplicar negrita
                             )
                         )
@@ -59,7 +64,7 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
 
                     Text(
                         "imshuvo97@gmail.com",
-                        style = MaterialTheme.typography.bodyMedium.copy(
+                        style = textStyle.copy(
                             color = Color.Gray // Cambiar el color a gris
                         )
                     )
@@ -69,13 +74,13 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
             Spacer(modifier = Modifier.height(24.dp))
             HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
-            AccountMenuItem("Orders", R.drawable.order)
-            AccountMenuItem("My Details", R.drawable.details)
-            AccountMenuItem("Delivery Address", R.drawable.delivery)
-            AccountMenuItem("Payment Methods", R.drawable.payment)
-            AccountMenuItem("Promo Card", R.drawable.promo)
-            AccountMenuItem("Notifications", R.drawable.notification)
-            AccountMenuItem("Help", R.drawable.help)
+            AccountMenuItem("Orders", R.drawable.order, textStyle)
+            AccountMenuItem("My Details", R.drawable.details, textStyle)
+            AccountMenuItem("Delivery Address", R.drawable.delivery, textStyle)
+            AccountMenuItem("Payment Methods", R.drawable.payment, textStyle)
+            AccountMenuItem("Promo Card", R.drawable.promo, textStyle)
+            AccountMenuItem("Notifications", R.drawable.notification, textStyle)
+            AccountMenuItem("Help", R.drawable.help, textStyle)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -84,14 +89,14 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Dark mode", style = MaterialTheme.typography.bodyLarge)
+                Text("Dark mode", style = textStyle)
                 CustomSwitch(checked = isDarkMode, onCheckedChange = { toggleDarkMode(it) })
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { /* Handle logout */ },
+                onClick = { navController.navigate("signup") }, // Navigate to SignUpScreen
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -113,7 +118,7 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Log Out")
+                        Text("Log Out", style = textStyle)
                     }
                 }
             }
@@ -122,7 +127,7 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
 }
 
 @Composable
-fun AccountMenuItem(title: String, iconResId: Int) {
+fun AccountMenuItem(title: String, iconResId: Int, textStyle: TextStyle) {
     Column {
         Row(
             modifier = Modifier
@@ -137,7 +142,7 @@ fun AccountMenuItem(title: String, iconResId: Int) {
             )
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium.copy(
+                style = textStyle.copy(
                     fontWeight = FontWeight.Bold // Aplicar negrita
                 ),
                 modifier = Modifier.padding(start = 16.dp)

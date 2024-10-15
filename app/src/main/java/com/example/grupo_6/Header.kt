@@ -16,11 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun Header(title: String, isDarkMode: Boolean) {
     val backgroundColor = if (isDarkMode) Color(0xFF1E1E1E) else Color(0xFFFCFCFC)
     val textColor = if (isDarkMode) Color.White else Color.Black
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
 
     Box(
         modifier = Modifier
@@ -45,7 +51,8 @@ fun Header(title: String, isDarkMode: Boolean) {
             text = title,
             fontSize = 20.sp,
             color = textColor,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
+            style = textStyle
         )
     }
 }
@@ -55,3 +62,4 @@ fun Header(title: String, isDarkMode: Boolean) {
 fun HeaderPreview() {
     Header(title = "Shop", isDarkMode = false)
 }
+

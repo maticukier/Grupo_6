@@ -40,9 +40,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+
 
 @Composable
 fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,28 +57,27 @@ fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
         Spacer(modifier = Modifier.height(30.dp))
         Box(
             modifier = Modifier
-            .fillMaxWidth(),
+                .fillMaxWidth(),
             contentAlignment = Alignment.CenterStart
         ){
-                Spacer(modifier = Modifier.height(30.dp))
-                Icon(
-                    Icons.Rounded.Close,
-                    contentDescription = "Cross",
-                    modifier = Modifier
-                        .size(25.dp)
-                        .offset(x = 15.dp)
-                        .clickable {
-                            navController.navigate("explore")
-                        }
-                )
-                Text("Filters", style =
-                TextStyle(
-                    fontSize = 21.sp,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                ),
-                    modifier = Modifier.align(Alignment.Center)
-                )
+            Spacer(modifier = Modifier.height(30.dp))
+            Icon(
+                Icons.Rounded.Close,
+                contentDescription = "Cross",
+                modifier = Modifier
+                    .size(25.dp)
+                    .offset(x = 15.dp)
+                    .clickable {
+                        navController.navigate("explore")
+                    }
+            )
+            Text("Filters", style = textStyle.copy(
+                fontSize = 21.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+            ),
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -85,8 +90,7 @@ fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
             Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.padding(start = 16.dp)) {
                 Text(
-                    "Categories", style =
-                    TextStyle(
+                    "Categories", style = textStyle.copy(
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -95,12 +99,11 @@ fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
             }
             Spacer(modifier = Modifier.height(10.dp))
             val items = listOf("Eggs", "Noodles & Pasta", "Chips & Crisps", "Fast Food")
-            Checklist(items)
+            Checklist(items, textStyle)
             Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.padding(start = 16.dp)) {
                 Text(
-                    "Brands", style =
-                    TextStyle(
+                    "Brands", style = textStyle.copy(
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -109,7 +112,7 @@ fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
             }
             Spacer(modifier = Modifier.height(10.dp))
             val items2 = listOf("Individual Collection", "Cocola", "Ifad", "Kazi Farmas")
-            Checklist(items2)
+            Checklist(items2, textStyle)
         }
         Column(
             modifier = Modifier
@@ -126,15 +129,14 @@ fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175)),
                 shape = RoundedCornerShape(18.dp)
             ) {
-                Text("Apply Filter", color = Color.White, modifier = Modifier.padding(vertical = 8.dp))
+                Text("Apply Filter", color = Color.White, modifier = Modifier.padding(vertical = 8.dp), style = textStyle)
             }
         }
     }
-
 }
 
 @Composable
-fun Checklist(items: List<String>) {
+fun Checklist(items: List<String>, textStyle: TextStyle) {
     // State to hold the checked status of each item
     val checkedStates = remember { mutableStateListOf(*Array(items.size) { false }) }
 
@@ -156,7 +158,8 @@ fun Checklist(items: List<String>) {
                 // Label for each item
                 Text(
                     text = item,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    style = textStyle
                 )
             }
         }

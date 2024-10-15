@@ -159,14 +159,14 @@ fun CheckoutScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = { navController.navigate("shop") },
+                            onClick = { navController.navigate("orderAccepted") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(70.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
                             shape = RoundedCornerShape(18.dp)
                         ) {
-                            Text("Place Order", fontSize = 18.sp, fontFamily = poppins,  fontWeight = FontWeight.ExtraBold,)
+                            Text("Place Order", fontSize = 18.sp, fontFamily = poppins, fontWeight = FontWeight.ExtraBold)
                         }
                     }
                 }

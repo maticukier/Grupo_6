@@ -20,11 +20,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 
 
 @Composable
 fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
-    // Estado para controlar si el CheckoutScreen se debe mostrar
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
+
     var showCheckoutDialog by remember { mutableStateOf(false) }
 
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
@@ -43,12 +49,11 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
             Spacer(modifier = Modifier.height(8.dp))
 
             ProductsInCart.forEach { product ->
-                ProductInCart(productCart = product, textColor = textColor)
+                ProductInCart(productCart = product, textColor = textColor, textStyle = textStyle)
             }
 
-            // Botón para ir al Checkout
             Button(
-                onClick = { showCheckoutDialog = true }, // Al presionar, se muestra el dialogo
+                onClick = { showCheckoutDialog = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -56,19 +61,17 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175)),
                 shape = RoundedCornerShape(18.dp)
             ) {
-                Text("Go to Checkout", color = Color.White, modifier = Modifier.padding(vertical = 8.dp))
+                Text("Go to Checkout", color = Color.White, modifier = Modifier.padding(vertical = 8.dp), style = textStyle)
             }
         }
 
-        // Mostrar el diálogo de Checkout cuando showCheckoutDialog es true
         if (showCheckoutDialog) {
             CheckoutScreen(
                 navController = navController,
-                onDismissRequest = { showCheckoutDialog = false } // Cerrar el dialogo
+                onDismissRequest = { showCheckoutDialog = false }
             )
         }
 
-        // Solo mostrar el Footer si el CheckoutScreen no está visible
         if (!showCheckoutDialog) {
             Footer(
                 navController = navController,
@@ -80,30 +83,26 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
     }
 }
 
-
 @Composable
-fun ProductInCart(productCart: CartProduct, textColor: Color) {
-    // Diseño de cada producto en el carrito
+fun ProductInCart(productCart: CartProduct, textColor: Color, textStyle: TextStyle) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically // Alineación de los elementos en la fila
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        // Imagen del producto
         Image(
             painter = painterResource(id = productCart.imageResId),
             contentDescription = productCart.name,
             modifier = Modifier
-                .size(64.dp) // Tamaño de la imagen
-                .padding(end = 16.dp) // Espaciado con el resto del contenido
+                .size(64.dp)
+                .padding(end = 16.dp)
         )
 
-        // Columna con la información del producto
         Column {
-            Text(text = productCart.name, color = textColor)
-            Text(text = productCart.description, color = Color.Gray)
-            Text(text = productCart.price, color = textColor)
+            Text(text = productCart.name, color = textColor, style = textStyle)
+            Text(text = productCart.description, color = Color.Gray, style = textStyle)
+            Text(text = productCart.price, color = textColor, style = textStyle)
         }
     }
 }

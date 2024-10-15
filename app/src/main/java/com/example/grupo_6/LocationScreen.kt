@@ -37,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +49,9 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun LocationScreen(navController: NavController) {
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
+
     Column {
         // Row for the back arrow
         Row(
@@ -95,8 +100,7 @@ fun LocationScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    "Select Your Location", style =
-                    TextStyle(
+                    "Select Your Location", style = textStyle.copy(
                         fontSize = 26.sp,
                         color = Color.Black,
                         textAlign = TextAlign.Center,
@@ -105,9 +109,8 @@ fun LocationScreen(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    "Switch your location to stay in tune with what's happening in your area", style =
-                    TextStyle(
-                        fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center
+                    "Switch your location to stay in tune with what's happening in your area", style = textStyle.copy(
+                        fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold
                     )
                 )
             }
@@ -119,11 +122,27 @@ fun LocationScreen(navController: NavController) {
                     .background(Color(255, 255, 255)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Your Zone", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
-                DropdownMenuExample("Select your zone")
+                Text(
+                    "Your Zone",
+                    style = textStyle.copy(
+                        fontSize = 16.sp,
+                        color = Color.DarkGray, // Use a darker gray color
+                        fontWeight = FontWeight.ExtraBold // Set font weight to ExtraBold
+                    ),
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp)
+                )
+                DropdownMenuExample("Select your zone", listOf("Banasree", "Jakarta", "Frankfurt"), textStyle)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Your Area", style = TextStyle(fontSize = 16.sp, color = Color.Gray), modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp))
-                DropdownMenuExample("Select your area")
+                Text(
+                    "Your Area",
+                    style = textStyle.copy(
+                        fontSize = 16.sp,
+                        color = Color.DarkGray, // Use a darker gray color
+                        fontWeight = FontWeight.ExtraBold // Set font weight to ExtraBold
+                    ),
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp, bottom = 8.dp)
+                )
+                DropdownMenuExample("Select your area", listOf("Bangladesh", "Indonesia", "Germany"), textStyle)
             }
 
             //Columna del boton
@@ -143,7 +162,7 @@ fun LocationScreen(navController: NavController) {
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash), contentColor = Color.White),
                     shape = RoundedCornerShape(18.dp)
                 ) {
-                    Text("Submit", fontSize = 18.sp)
+                    Text("Submit", fontSize = 18.sp, style = textStyle)
                 }
             }
         }
@@ -151,7 +170,7 @@ fun LocationScreen(navController: NavController) {
 }
 
 @Composable
-fun DropdownMenuExample(placeholder: String) {
+fun DropdownMenuExample(placeholder: String, options: List<String>, textStyle: TextStyle) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf("") }
 
@@ -162,11 +181,10 @@ fun DropdownMenuExample(placeholder: String) {
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(Color.Transparent)
-                .border( 1.dp, Color.Transparent , RoundedCornerShape(8.dp)),
+                .border(1.dp, Color.Transparent, RoundedCornerShape(8.dp)),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,
                 contentColor = if (selectedOption.isEmpty()) Color.Gray else Color.Black
-
             ),
             shape = RoundedCornerShape(8.dp),
             border = null,
@@ -182,7 +200,7 @@ fun DropdownMenuExample(placeholder: String) {
             ) {
                 Text(
                     text = if (selectedOption.isEmpty()) placeholder else selectedOption,
-                    style = TextStyle(fontSize = 16.sp)
+                    style = textStyle.copy(fontSize = 16.sp)
                 )
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
@@ -197,10 +215,9 @@ fun DropdownMenuExample(placeholder: String) {
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth()
         ) {
-            val options = listOf("Option 1", "Option 2", "Option 3")
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option, style = textStyle) },
                     onClick = {
                         selectedOption = option
                         expanded = false

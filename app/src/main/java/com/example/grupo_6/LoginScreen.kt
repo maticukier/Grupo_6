@@ -189,17 +189,16 @@ fun LoginScreen(navController: NavController) {
                 } else {
                     showDialog = true
                     dialogMessage = loginResult.second
-                }
-            },
+                } },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(70.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
-            shape = RoundedCornerShape(28.dp)
+            shape = RoundedCornerShape(18.dp)
         ) {
-            Text("Log In", fontSize = 18.sp)
+            Text("Log in", fontSize = 18.sp, fontFamily = poppins,  fontWeight = FontWeight.ExtraBold,)
         }
+
 
         // Diálogo personalizado para mostrar errores
         if (showDialog) {
@@ -241,6 +240,8 @@ fun LoginScreen(navController: NavController) {
             }
         }
 
+
+        Spacer(modifier = Modifier.height(15.dp))
         // Mensaje de respuesta
         Row(
             horizontalArrangement = Arrangement.Center,

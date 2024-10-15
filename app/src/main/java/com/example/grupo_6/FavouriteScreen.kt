@@ -24,13 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.TextStyle
 
 
 @Composable
 fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
-    val poppins = FontFamily(
-        Font(R.font.poppins_regular),
-    )
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
     val showErrorScreen = remember { mutableStateOf(false) }
 
     Scaffold(
@@ -48,7 +48,7 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
                     .padding(16.dp)
             ) {
                 items(FavouriteProducts) { product ->
-                    FavouriteProductItem(product)
+                    FavouriteProductItem(product, textStyle)
                     HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
                 }
             }
@@ -67,6 +67,7 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
                     fontSize = 18.sp,
                     fontFamily = poppins,
                     fontWeight = FontWeight.ExtraBold,
+                    style = textStyle
                 )
             }
         }
@@ -77,11 +78,8 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
     }
 }
 
-
-
-
 @Composable
-fun FavouriteProductItem(product: Product) {
+fun FavouriteProductItem(product: Product, textStyle: TextStyle) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,11 +92,11 @@ fun FavouriteProductItem(product: Product) {
             modifier = Modifier.size(60.dp)
         )
         Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(text = product.name, fontWeight = FontWeight.Bold)
-            Text(text = product.description, color = Color.Gray)
+            Text(text = product.name, fontWeight = FontWeight.Bold, style = textStyle)
+            Text(text = product.description, color = Color.Gray, style = textStyle)
         }
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = product.price, fontWeight = FontWeight.Bold)
+        Text(text = product.price, fontWeight = FontWeight.Bold, style = textStyle)
     }
 }
 

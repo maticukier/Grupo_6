@@ -253,14 +253,13 @@ fun SignUpScreen(navController: NavController) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
+                .height(70.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text("Sign Up", fontSize = 18.sp)
+            Text("Sign Up", fontSize = 18.sp, fontFamily = poppins,  fontWeight = FontWeight.ExtraBold,)
         }
+        Spacer(modifier = Modifier.height(15.dp))
 
         // Texto de "Already have an account?"
         Row(

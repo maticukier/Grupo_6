@@ -20,11 +20,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryProductsScreen(navController: NavHostController, categoryName: String, isDarkMode: Boolean) {
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
     val products = getProductsByCategory(categoryName)
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
     val textColor = if (isDarkMode) Color.White else Color.Black
@@ -34,7 +40,7 @@ fun CategoryProductsScreen(navController: NavHostController, categoryName: Strin
             TopAppBar(
                 title = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        Text(categoryName)
+                        Text(categoryName, style = textStyle)
                     }
                 },
                 navigationIcon = {
@@ -62,7 +68,7 @@ fun CategoryProductsScreen(navController: NavHostController, categoryName: Strin
                 modifier = Modifier.padding(innerPadding)
             ) {
                 items(products) { product ->
-                    ProductCard(product = product, cardBackgroundColor = backgroundColor, textColor = textColor)
+                    ProductCard(product = product, cardBackgroundColor = backgroundColor, textColor = textColor, textStyle = textStyle)
                 }
             }
         }
@@ -109,7 +115,7 @@ fun getProductsByCategory(categoryName: String): List<Product> {
 }
 
 @Composable
-fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color) {
+fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, textStyle: TextStyle) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -136,10 +142,10 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color) 
                         .height(100.dp) // Adjusted height for the image
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = product.name, fontSize = 16.sp, color = textColor, fontWeight = FontWeight.Bold)
-                Text(text = product.description, fontSize = 12.sp, color = Color.Gray) // Added subtitle
+                Text(text = product.name, fontSize = 16.sp, color = textColor, fontWeight = FontWeight.Bold, style = textStyle)
+                Text(text = product.description, fontSize = 12.sp, color = Color.Gray, style = textStyle) // Added subtitle
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = product.price, fontSize = 14.sp, color = textColor)
+                Text(text = product.price, fontSize = 14.sp, color = textColor, style = textStyle)
             }
             Box(
                 modifier = Modifier

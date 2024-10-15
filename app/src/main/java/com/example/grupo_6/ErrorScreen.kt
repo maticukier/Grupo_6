@@ -118,7 +118,7 @@ fun ErrorScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = { navController.navigate("shop") },
+                            onClick = { navController.navigate("favourite") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(70.dp),

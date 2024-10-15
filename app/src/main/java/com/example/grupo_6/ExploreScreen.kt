@@ -20,9 +20,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+
 
 @Composable
 fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
+    val poppins = FontFamily(Font(R.font.poppins_regular))
+    val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
     var searchQuery by remember { mutableStateOf("") }
     val filteredCategories = categoryList.filter { it.name.contains(searchQuery, ignoreCase = true) }
 
@@ -41,21 +47,22 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
                 onSearchQueryChange = { query -> searchQuery = query },
                 onTrailingIconClick = {
                     navController.navigate("filters")
-                }
+                },
+                textStyle = textStyle
             )
             Spacer(modifier = Modifier.height(8.dp))
-            ExploreGrid(filteredCategories, navController)
+            ExploreGrid(filteredCategories, navController, textStyle)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrailingIconClick: () -> Unit) {
+fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrailingIconClick: () -> Unit, textStyle: TextStyle) {
     TextField(
         value = searchQuery,
         onValueChange = onSearchQueryChange,
-        placeholder = { Text("Search store") },
+        placeholder = { Text("Search store", style = textStyle) },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.lupa),
@@ -69,8 +76,7 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrai
                     onTrailingIconClick()
                 }.size(24.dp),
                 painter = painterResource(id = R.drawable.ajustes),
-                contentDescription = "Adjust Icon",
-                //modifier = Modifier.size(24.dp)
+                contentDescription = "Adjust Icon"
             )
         },
         modifier = Modifier
@@ -81,12 +87,13 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrai
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        textStyle = textStyle
     )
 }
 
 @Composable
-fun ExploreGrid(categories: List<Category>, navController: NavHostController) {
+fun ExploreGrid(categories: List<Category>, navController: NavHostController, textStyle: TextStyle) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -96,13 +103,13 @@ fun ExploreGrid(categories: List<Category>, navController: NavHostController) {
         itemsIndexed(categories) { index, category ->
             val backgroundColor = variedColors[index % variedColors.size]
             val borderColor = backgroundColor.darken(0.2f)
-            ExploreCard(category = category, backgroundColor = backgroundColor, borderColor = borderColor, navController = navController)
+            ExploreCard(category = category, backgroundColor = backgroundColor, borderColor = borderColor, navController = navController, textStyle = textStyle)
         }
     }
 }
 
 @Composable
-fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color, navController: NavHostController) {
+fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color, navController: NavHostController, textStyle: TextStyle) {
     Card(
         modifier = Modifier
             .width(174.5.dp)
@@ -128,7 +135,7 @@ fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color, 
                     .height(120.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = category.name, fontSize = 16.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+            Text(text = category.name, fontSize = 16.sp, color = Color.Black, fontWeight = FontWeight.Bold, style = textStyle)
         }
     }
 }
