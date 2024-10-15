@@ -14,15 +14,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
+
 @Composable
 fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
+    val poppins = FontFamily(
+        Font(R.font.poppins_regular),
+    )
+    val showErrorScreen = remember { mutableStateOf(false) }
+
     Scaffold(
         bottomBar = { Footer(navController = navController, selectedRoute = "favourite", isDarkMode = isDarkMode) }
     ) { innerPadding ->
@@ -31,32 +41,42 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // El Header ahora acepta el estado de modo oscuro
             Header(title = "Favourites", isDarkMode = isDarkMode)
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(1f) // Ensure LazyColumn takes available space
                     .padding(16.dp)
             ) {
                 items(FavouriteProducts) { product ->
                     FavouriteProductItem(product)
-                    Divider(color = Color.LightGray, thickness = 1.dp)
+                    HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
                 }
             }
+
             Button(
-                onClick = { /* Add all to cart */ },
+                onClick = { showErrorScreen.value = true },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175)),
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(0.9f)
+                    .height(70.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
                 shape = RoundedCornerShape(18.dp)
             ) {
-                Text("Add All To Cart", color = Color.White)
+                Text(
+                    "Add All To Cart",
+                    fontSize = 18.sp,
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.ExtraBold,
+                )
             }
         }
     }
+
+    if (showErrorScreen.value) {
+        ErrorScreen(navController = navController, onDismissRequest = { showErrorScreen.value = false })
+    }
 }
+
 
 
 
