@@ -1,7 +1,6 @@
 package com.example.grupo_6
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -37,9 +36,7 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
     val textColor = if (isDarkMode) Color.White else Color.Black
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -47,13 +44,11 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
         ) {
             Header(title = "My Cart", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
-
             ProductsInCart.forEach { product ->
-                ProductInCart(productCart = product, textColor = textColor, textStyle = textStyle)
+                ProductInCart(productCart = product)
             }
-
             Button(
-                onClick = { showCheckoutDialog = true },
+                onClick = { /* Handle 'Add All To Cart' */ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -61,11 +56,13 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175)),
                 shape = RoundedCornerShape(18.dp)
             ) {
-                Text("Go to Checkout", color = Color.White, modifier = Modifier.padding(vertical = 8.dp), style = textStyle)
-            }
-        }
+                Text("Go to Checkout", color = Color.White, modifier = Modifier.padding(vertical = 8.dp))
+            }        }
+        Footer(navController = navController, selectedRoute = "shop", modifier = Modifier.align(Alignment.BottomCenter), isDarkMode = isDarkMode)
 
-        if (showCheckoutDialog) {
+    }
+
+    if (showCheckoutDialog) {
             CheckoutScreen(
                 navController = navController,
                 onDismissRequest = { showCheckoutDialog = false }
@@ -77,11 +74,10 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                 navController = navController,
                 selectedRoute = "cart",
                 isDarkMode = isDarkMode,
-                modifier = Modifier.align(Alignment.BottomCenter)
+                //modifier = Modifier.align()
             )
         }
     }
-}
 
 @Composable
 fun ProductInCart(productCart: CartProduct, textColor: Color, textStyle: TextStyle) {
