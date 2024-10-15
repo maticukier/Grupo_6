@@ -1,3 +1,8 @@
+Versión de android studio
+Koala 2024.1.2.12
+
+Para ingresar a la app es necesario registrarse primero y luego hacer el login.
+
 ¿Qué tipo de arquitectura usaron y por qué? Patrón mvvm, porque la estructura tiene componentes que separan la vista de la lógica de negocio ¿Podría mejorarla? si, podría aplicarse una arquitectura en capas al mvvm para tener bien separadas las capas de persistencia, negocio, presentación, aplicación
 
 ¿Tuvieron objetos stateful y stateless? Usamos stateful para los íconos del footer cuando se tocan cambien de color y para el darkmode, stateless para las imageviews, los títulos de cada sección, botones como en la screen del onboardin ¿Cómo definen la elección de los mismos? Para los stateless pensamos en objetos estáticos que no necesitan guardar ningún estado interno, mientras que para los stateful pensamos en funcionalidades que guarden un estado interno que cambia cuando se toca el objeto
