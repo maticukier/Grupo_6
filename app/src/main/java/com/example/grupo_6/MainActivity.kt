@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.*
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.grupo_6.ui.theme.Grupo_6Theme
 
 class MainActivity : ComponentActivity() {
@@ -18,8 +18,69 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LoginScreen()
+            var isDarkMode by remember { mutableStateOf(false) }
+            AppNavigation(isDarkMode = isDarkMode, toggleDarkMode = { isDarkMode = it })
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppNavigation(isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
+    val navController = rememberNavController()
+
+    Grupo_6Theme(isDarkTheme = isDarkMode) {
+        NavHost(navController = navController, startDestination = "splash") {
+            composable("splash") {
+                SplashScreen()
+
+                LaunchedEffect(Unit) {
+                    kotlinx.coroutines.delay(2000)  // 2 segundos de espera
+                    navController.navigate("prelogin") {
+                        popUpTo("splash") { inclusive = true } // Eliminar Splash de la pila
+                    }
+                }
+            }
+
+            composable("prelogin") { PreLoginScreen(navController) }
+            composable("checkout") { CheckoutScreen(navController) }
+            composable("login") { LoginScreen(navController) }
+            composable("signup") { SignUpScreen(navController) }
+            composable("location") { LocationScreen(navController) }
+            composable("shop") {
+                HomeScreen(navController = navController, isDarkMode = isDarkMode)
+            }
+                composable("orderAccepted") { OrderAcceptedScreen(navController) }
+
+            composable("cart") { CartScreen(navController , isDarkMode = isDarkMode) }
+            composable("explore") {
+                ExploreScreen(navController = navController, isDarkMode = isDarkMode)
+            }
+            composable("filters") {
+                FilterScreen(navController = navController, isDarkMode = isDarkMode)
+            }
+            composable("productDetail"){ ProductDetailScreen(navController, isDarkMode = isDarkMode) }
+
+            composable("favourite") {
+                FavouriteScreen(navController = navController, isDarkMode = isDarkMode)
+            }
+            composable("account") {
+                AccountScreen(
+                    navController = navController,
+                    isDarkMode = isDarkMode,
+                    toggleDarkMode = toggleDarkMode
+                )
+            }
+            composable("searchScreen") {
+                SearchScreen(navController = navController, isDarkMode = isDarkMode)
+            }
+            composable(
+                route = "categoryProducts/{categoryName}",
+                arguments = listOf(navArgument("categoryName") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
+                CategoryProductsScreen(navController = navController, categoryName = categoryName, isDarkMode = isDarkMode)
             }
         }
     }
-
+}
