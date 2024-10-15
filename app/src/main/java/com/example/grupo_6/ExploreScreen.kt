@@ -26,7 +26,7 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
     val filteredCategories = categoryList.filter { it.name.contains(searchQuery, ignoreCase = true) }
 
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "Explore", isDarkMode = isDarkMode) }
+        bottomBar = { Footer(navController = navController, selectedRoute = "explore", isDarkMode = isDarkMode,) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -51,23 +51,23 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
         placeholder = { Text("Search store") },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.lupa), // Use painterResource for PNG
+                painter = painterResource(id = R.drawable.lupa),
                 contentDescription = "Search Icon",
-                modifier = Modifier.size(24.dp) // Set the size of the icon
+                modifier = Modifier.size(24.dp)
             )
         },
         trailingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.ajustes), // Use painterResource for PNG
+                painter = painterResource(id = R.drawable.ajustes),
                 contentDescription = "Adjust Icon",
-                modifier = Modifier.size(24.dp) // Set the size of the icon
+                modifier = Modifier.size(24.dp)
             )
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color(0xFFF0F0F0), // Set the background color to a soft grey
+            containerColor = Color(0xFFF0F0F0),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),

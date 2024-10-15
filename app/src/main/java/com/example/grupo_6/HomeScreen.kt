@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
@@ -19,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -33,21 +33,25 @@ fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
             .fillMaxSize()
             .background(backgroundColor) // Fondo dinámico según el modo oscuro
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp), // Add padding to the bottom to avoid overlap with the footer
             verticalArrangement = Arrangement.Top
         ) {
-            Header(title = "Shop", isDarkMode = isDarkMode) // Pasamos isDarkMode al Header
-            Spacer(modifier = Modifier.height(8.dp))
-            CityTitle(cityName = "Dhaka, Banasree", textColor = textColor) // Color dinámico para el título de la ciudad
-            BannerImage()
-            Spacer(modifier = Modifier.height(16.dp))
-            SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor) // Color dinámico para la sección
-            ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController) // Color dinámico para los productos
-            Spacer(modifier = Modifier.height(16.dp))
-            SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor)
-            ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController)
-            Spacer(modifier = Modifier.weight(1f))
+            item {
+                Header(title = "Shop", isDarkMode = isDarkMode) // Pasamos isDarkMode al Header
+                Spacer(modifier = Modifier.height(8.dp))
+                CityTitle(cityName = "Dhaka, Banasree", textColor = textColor) // Color dinámico para el título de la ciudad
+                BannerImage()
+                Spacer(modifier = Modifier.height(16.dp))
+                SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor) // Color dinámico para la sección
+                ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController) // Color dinámico para los productos
+                Spacer(modifier = Modifier.height(16.dp))
+                SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor)
+                ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
         Footer(navController = navController, selectedRoute = "shop", isDarkMode = isDarkMode, modifier = Modifier.align(Alignment.BottomCenter))
     }
@@ -64,10 +68,11 @@ fun CityTitle(cityName: String, textColor: Color) {
         Text(
             text = cityName,
             fontSize = 18.sp,
-            color = textColor // Color dinámico
+            color = textColor
         )
     }
 }
+
 @Composable
 fun BannerImage() {
     Image(
@@ -75,9 +80,10 @@ fun BannerImage() {
         contentDescription = "Banner Image",
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp) // Adjust the height as needed
+            .height(200.dp)
     )
 }
+
 @Composable
 fun SectionTitle(title: String, actionTitle: String, textColor: Color) {
     Row(
@@ -122,7 +128,7 @@ fun ProductList(products: List<Product>, isDarkMode: Boolean, navController: Nav
 }
 
 @Composable
-fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, navController : NavHostController) {
+fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, navController: NavHostController) {
     Card(
         modifier = Modifier
             .width(173.32.dp)
@@ -132,7 +138,7 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, 
             .clickable {
                 navController.navigate("productDetail")
             },
-            colors = CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor // Color dinámico de la tarjeta
         )
     ) {
@@ -180,15 +186,16 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, 
 
 data class Product(val name: String, val description: String, val price: String, val imageResId: Int)
 
-// Separate lists for Exclusive Offer and Best Sellings products
 val exclusiveOfferProducts = listOf(
     Product("Organic Bananas", "7pcs, Priceg", "$4.99", R.drawable.banana),
-    Product("Red Apple", "1kg, Priceg", "$4.99", R.drawable.apple)
+    Product("Red Apple", "1kg, Priceg", "$4.99", R.drawable.apple),
+    Product("Coca", "1L, Priceg", "$4.99", R.drawable.coca)
 )
 
 val bestSellingProducts = listOf(
     Product("Bell Pepper Red", "1kg, Priceg", "$4.99", R.drawable.tomato),
-    Product("Ginger", "250mg, Priceg", "$2.99", R.drawable.ginger)
+    Product("Ginger", "250mg, Priceg", "$2.99", R.drawable.ginger),
+    Product("Pepsi", "250mg, Priceg", "$4.99", R.drawable.pepsi)
 )
 
 @Preview(showBackground = true)

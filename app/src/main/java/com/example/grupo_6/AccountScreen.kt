@@ -21,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
     Scaffold(
-        bottomBar = {  Footer(navController = navController, selectedRoute = "someRoute", isDarkMode = isDarkMode) }
+        bottomBar = {  Footer(navController = navController, selectedRoute = "account", isDarkMode = isDarkMode) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
