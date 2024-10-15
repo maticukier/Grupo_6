@@ -28,6 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 
@@ -50,28 +51,30 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                     .background(backgroundColor)
                     .padding(innerPadding)
             ) {
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(bottom = 80.dp) // Espacio para el botón
+                        .padding(bottom = 150.dp) // Espacio para el botón y el Footer
                 ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f) // Ocupa el espacio restante en la columna
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        item {
-                            Header(title = "My Cart", isDarkMode = isDarkMode)
-                            Spacer(modifier = Modifier.height(2.dp))
-                        }
-
-                        items(ProductsInCart) { product ->
-                            ProductInCart(productCart = product, isDarkMode = isDarkMode)
-                        }
-
+                    item {
+                        Header(title = "My Cart", isDarkMode = isDarkMode)
+                        Spacer(modifier = Modifier.height(2.dp))
                     }
 
+                    items(ProductsInCart) { product ->
+                        ProductInCart(productCart = product, isDarkMode = isDarkMode)
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp)) // Added spacer to increase separation
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
                     Button(
                         onClick = {
                             showCheckoutDialog = true
@@ -81,27 +84,36 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                             .height(70.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
                         shape = RoundedCornerShape(18.dp)
-                    )  {
+                    ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
-                        ){
-                            Text("Go to Checkout", color = Color.White)
-                            Text("Total: $$total", color = Color.White)                    }
+                        ) {
+                            Spacer(modifier = Modifier.weight(1.5f)) // Adjusted weight to push text slightly to the right
+                            Text(
+                                "Go to Checkout",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                style = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            )
+                            Spacer(modifier = Modifier.weight(0.8f)) // Adjusted weight to balance the layout
+                            Box(
+                                modifier = Modifier
+                                    .background(Color(0xFF489E67), RoundedCornerShape(8.dp))
+                                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                            ) {
+                                Text("$$total", color = Color.White)
+                            }
+                        }
                     }
+
+                    Footer(
+                        navController = navController,
+                        selectedRoute = "cart",
+                        isDarkMode = isDarkMode,
+                        modifier = Modifier.fillMaxWidth() // Alineación del Footer al fondo
+                    )
                 }
-
-
-
-
-
-    Footer(
-                    navController = navController,
-                    selectedRoute = "cart",
-                    isDarkMode = isDarkMode,
-                    modifier = Modifier.align(Alignment.BottomCenter) // Alineación del Footer al fondo
-                )
             }
         }
     )
@@ -153,6 +165,7 @@ val ProductsInCart = listOf(
     CartProduct("Egg Chicken Red", "4pcs, Price", "$1.99", R.drawable.egg, 1),
     CartProduct("Organic Bananas", "12kg, Price", "$3.00", R.drawable.banana, 1),
     CartProduct("Ginger", "250mg, Price", "$2.99", R.drawable.ginger, 1),
+    CartProduct("Sprite Can", "325ml, Price", "$1.50", R.drawable.sprite, 1),
 )
 @Preview(showBackground = true)
 @Composable

@@ -46,18 +46,24 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
                         .padding(horizontal = 16.dp)
                 ) {
                     Header(title = "Favourites", isDarkMode = isDarkMode)
-
+                    HorizontalDivider(thickness = 1.dp, color = Color.LightGray, modifier = Modifier.fillMaxWidth())
                     LazyColumn(
                         modifier = Modifier
-                            .weight(1f) // Ensure LazyColumn takes available space
+                            .weight(12f) // Ensure LazyColumn takes available space
                             .padding(16.dp)
                     ) {
                         items(FavouriteProducts) { product ->
                             FavouriteProductItem(product, textStyle)
-                            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+                            HorizontalDivider(thickness = 1.dp, color = Color.LightGray, modifier = Modifier.fillMaxWidth())
                         }
                     }
+                }
 
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
                     Button(
                         onClick = { showErrorScreen.value = true },
                         modifier = Modifier
@@ -75,14 +81,14 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
                             style = textStyle
                         )
                     }
-                }
 
-                Footer(
-                    navController = navController,
-                    selectedRoute = "favourite",
-                    isDarkMode = isDarkMode,
-                    modifier = Modifier.align(Alignment.BottomCenter) // Align Footer to the bottom
-                )
+                    Footer(
+                        navController = navController,
+                        selectedRoute = "favourite",
+                        isDarkMode = isDarkMode,
+                        modifier = Modifier.fillMaxWidth() // Align Footer to the bottom
+                    )
+                }
             }
         }
     )
@@ -91,7 +97,6 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
         ErrorScreen(navController = navController, onDismissRequest = { showErrorScreen.value = false })
     }
 }
-
 
 @Composable
 fun FavouriteProductItem(product: Product, textStyle: TextStyle) {
@@ -111,7 +116,14 @@ fun FavouriteProductItem(product: Product, textStyle: TextStyle) {
             Text(text = product.description, color = Color.Gray, style = textStyle)
         }
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = product.price, fontWeight = FontWeight.Bold, style = textStyle)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = product.price, fontWeight = FontWeight.Bold, style = textStyle)
+            Image(
+                painter = painterResource(id = R.drawable.flecha),
+                contentDescription = "Arrow",
+                modifier = Modifier.size(18.dp).padding(start = 10.dp)
+            )
+        }
     }
 }
 

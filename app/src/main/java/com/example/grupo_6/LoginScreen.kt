@@ -157,7 +157,7 @@ fun LoginScreen(navController: NavController) {
                     Log.d("LoginResponse", response)
                     if (response.contains("success")) {
                         // Navegar a la pantalla principal o dashboard
-                        navController.navigate("shop") {
+                        navController.navigate("location") {
                             popUpTo("login") { inclusive = true } // Eliminar la pantalla de login de la pila
                         }
                     }
