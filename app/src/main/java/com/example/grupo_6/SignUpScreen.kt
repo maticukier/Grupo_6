@@ -1,6 +1,7 @@
 package com.example.grupo_6
 
 import android.util.Log
+import com.example.grupo_6.users // Agrega esta línea al principio de tu archivo
 import androidx.compose.runtime.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -33,6 +34,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
+// Definir la clase de usuario
+data class User(val username: String, val email: String, val password: String)
+
+// Lista de usuarios global
+val users = mutableListOf<User>()
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -50,7 +56,6 @@ fun SignUpScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(25.dp),
-
     ) {
         Spacer(modifier = Modifier.height(50.dp)) // Ajustar espacio
 
@@ -84,7 +89,6 @@ fun SignUpScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(50.dp))
 
         // Campo de usuario
-
         Text(
             text = "Username",
             fontSize = 15.sp,
@@ -111,10 +115,9 @@ fun SignUpScreen(navController: NavController) {
             )
         )
 
-
-
         HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
         Spacer(modifier = Modifier.height(25.dp))
+
         // Campo de email
         Text(
             text = "Email",
@@ -122,8 +125,8 @@ fun SignUpScreen(navController: NavController) {
             fontWeight = FontWeight.ExtraBold,
             fontFamily = poppins,
             color = Color(0xff7c7c7c),
-
         )
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -150,6 +153,7 @@ fun SignUpScreen(navController: NavController) {
                 unfocusedContainerColor = Color.Transparent  // Color del fondo cuando no está enfocado
             )
         )
+
         HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
         Spacer(modifier = Modifier.height(25.dp))
 
@@ -239,14 +243,13 @@ fun SignUpScreen(navController: NavController) {
             )
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
                 signUp(username, email, password) { response ->
                     responseMessage = response
                     Log.d("SignUpResponse", response)
-                    if (response.contains("success")) { // Assuming a successful response contains "success"
+                    if (response.contains("success")) {
                         navController.navigate("login")
                     }
                 }
@@ -257,8 +260,9 @@ fun SignUpScreen(navController: NavController) {
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text("Sign Up", fontSize = 18.sp, fontFamily = poppins,  fontWeight = FontWeight.ExtraBold,)
+            Text("Sign Up", fontSize = 18.sp, fontFamily = poppins, fontWeight = FontWeight.ExtraBold)
         }
+
         Spacer(modifier = Modifier.height(15.dp))
 
         // Texto de "Already have an account?"
@@ -271,12 +275,11 @@ fun SignUpScreen(navController: NavController) {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = poppins,
-                color = Color.Black,
-                modifier = Modifier
+                color = Color(0xff7c7c7c),
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(3.dp))
             Text(
-                text = "Sign in",
+                text = "Log in",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = poppins,
@@ -286,61 +289,29 @@ fun SignUpScreen(navController: NavController) {
                 }
             )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = responseMessage, color = Color.Red)
     }
 }
 
-private fun signUp(username: String,email: String, password: String, onResponse: (String) -> Unit) {
-    val client = OkHttpClient()
-    val json = """
-        {
-            "email": "$email",
-            "username": "$username",
-            "password": "$password",
-            "name": {
-                "firstname": "John",
-                "lastname": "Doe"
-            },
-            "address": {
-                "city": "kilcoole",
-                "street": "7835 new road",
-                "number": 3,
-                "zipcode": "12926-3874",
-                "geolocation": {
-                    "lat": "-37.3159",
-                    "long": "81.1496"
-                }
-            },
-            "phone": "1-570-236-7033"
-        }
-    """.trimIndent()
-    val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json)
-    val request = Request.Builder()
-        .url("https://fakestoreapi.com/users")
-        .post(requestBody)
-        .build()
+// Función para registrar usuarios
+private fun signUp(username: String, email: String, password: String, onResponse: (String) -> Unit) {
+    val newUser = User(username, email, password)
 
-    CoroutineScope(Dispatchers.IO).launch {
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("SignUpError", "Error: ${e.message}")
-                onResponse("Error: ${e.message}")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!it.isSuccessful) {
-                        Log.e("SignUpError", "Unexpected code $it")
-                        onResponse("Unexpected code $it")
-                        return
-                    }
-                    val responseData = it.body?.string() ?: "No response"
-                    Log.d("SignUpResponse", responseData)
-                    onResponse(responseData)
-                }
-            }
-        })
+    // Verificar si el usuario ya existe
+    if (users.any { it.email == email || it.username == username }) {
+        onResponse("User already exists")
+        return
     }
+
+    // Agregar el nuevo usuario al array
+    users.add(newUser)
+
+    // Simulación de respuesta de éxito
+    onResponse("Sign up success")
 }
+
 
 @Preview(showBackground = true)
 @Composable
