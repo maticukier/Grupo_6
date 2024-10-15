@@ -1,6 +1,7 @@
 package com.example.grupo_6
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.*
@@ -37,8 +38,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+
 @Composable
-fun FilterScreen(){
+fun FilterScreen(navController: NavHostController, isDarkMode: Boolean){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +57,13 @@ fun FilterScreen(){
                 Spacer(modifier = Modifier.height(30.dp))
                 Icon(
                     Icons.Rounded.Close,
-                    contentDescription = "Cross"
+                    contentDescription = "Cross",
+                    modifier = Modifier
+                        .size(25.dp)
+                        .offset(x = 15.dp)
+                        .clickable {
+                            navController.navigate("explore")
+                        }
                 )
                 Text("Filters", style =
                 TextStyle(
@@ -108,7 +118,7 @@ fun FilterScreen(){
                 .height(200.dp)
         ) {
             Button(
-                onClick = { /* Handle 'Add All To Cart' */ },
+                onClick = { navController.navigate("explore") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -157,5 +167,7 @@ fun Checklist(items: List<String>) {
 @Preview
 @Composable
 fun FilterScreenPreview(){
-FilterScreen()
+    val navController = rememberNavController()
+    val isDarkMode = false
+FilterScreen(navController, isDarkMode)
 }

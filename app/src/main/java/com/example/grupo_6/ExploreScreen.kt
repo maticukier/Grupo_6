@@ -2,6 +2,7 @@ package com.example.grupo_6
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,7 +36,13 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
         ) {
             Header(title = "Explore", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
-            SearchBar(searchQuery) { query -> searchQuery = query }
+            SearchBar(
+                searchQuery,
+                onSearchQueryChange = { query -> searchQuery = query },
+                onTrailingIconClick = {
+                    navController.navigate("filters")
+                }
+            )
             Spacer(modifier = Modifier.height(8.dp))
             ExploreGrid(filteredCategories)
         }
@@ -44,7 +51,7 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
+fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrailingIconClick: () -> Unit) {
     TextField(
         value = searchQuery,
         onValueChange = onSearchQueryChange,
@@ -58,9 +65,11 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
         },
         trailingIcon = {
             Icon(
+                modifier = Modifier.clickable {
+                    onTrailingIconClick()
+                }.size(24.dp),
                 painter = painterResource(id = R.drawable.ajustes),
                 contentDescription = "Adjust Icon",
-                modifier = Modifier.size(24.dp)
             )
         },
         modifier = Modifier
