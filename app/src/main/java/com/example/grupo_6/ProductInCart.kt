@@ -9,6 +9,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,17 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // Data class para representar un producto en el carrito
-data class ProductCart(val name: String, val description: String, val price: String, val imageResId: Int)
-
 @Composable
-fun ProductInCart(productCart: CartProduct) {
+fun ProductInCart(productCart: CartProduct, isDarkMode: Boolean) {
+    // Usar un estado local para la cantidad
+    var quantity by remember { mutableStateOf(productCart.quantity) }
+
+    // Definir los colores para modo claro y oscuro
+    val cardBackgroundColor = if (isDarkMode) Color.DarkGray else Color.White
+    val textColor = if (isDarkMode) Color.White else Color.Black
+    val descriptionColor = if (isDarkMode) Color.LightGray else Color.Gray
+    val borderColor = if (isDarkMode) Color.Gray else Color.LightGray
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 0.dp, vertical = 8.dp)
-            .border(1.dp, Color.LightGray),
+            .padding(horizontal = 0.dp, vertical = 3.dp)
+            .border(1.dp, borderColor), // Cambiar color del borde según el modo
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = cardBackgroundColor // Cambiar el fondo según el modo
         ),
     ) {
         Row(
@@ -39,7 +50,7 @@ fun ProductInCart(productCart: CartProduct) {
         ) {
             // Imagen del producto
             Image(
-                painter = painterResource(id = productCart.imageResId), // Usar el recurso de imagen proporcionado
+                painter = painterResource(id = productCart.imageResId),
                 contentDescription = productCart.name,
                 modifier = Modifier
                     .size(80.dp)
@@ -54,15 +65,15 @@ fun ProductInCart(productCart: CartProduct) {
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 Text(
-                    text = productCart.name, // Nombre del producto
+                    text = productCart.name,
                     fontSize = 18.sp,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold // Hace el texto más grueso (bold)
+                    color = textColor, // Cambiar color del texto según el modo
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = productCart.description, // Descripción del producto
+                    text = productCart.description,
                     fontSize = 14.sp,
-                    color = Color.Gray // Cambia el color a gris
+                    color = descriptionColor // Cambiar color de la descripción
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -73,12 +84,16 @@ fun ProductInCart(productCart: CartProduct) {
                         contentDescription = "Remove",
                         modifier = Modifier
                             .size(64.dp)
-                            .clickable { /* Acción al reducir cantidad */ }
-                            .padding(12.dp) // Espacio entre la imagen y el borde
+                            .clickable {
+                                if (quantity > 1) {
+                                    quantity--
+                                }
+                            } // Disminuir cantidad
+                            .padding(12.dp)
                             .border(
                                 width = 1.dp,
                                 color = Color(0xFFF0F0F0),
-                                shape = RoundedCornerShape(8.dp) // Bordes redondeados
+                                shape = RoundedCornerShape(8.dp)
                             )
                             .padding(12.dp)
                     )
@@ -86,9 +101,9 @@ fun ProductInCart(productCart: CartProduct) {
                     Spacer(modifier = Modifier.width(15.dp))
 
                     Text(
-                        text = "1", // Cantidad actual (esto podría ser un valor dinámico si fuera necesario)
+                        text = quantity.toString(), // Mostrar la cantidad actual
                         fontSize = 16.sp,
-                        color = Color.Black
+                        color = textColor // Cambiar color del texto según el modo
                     )
 
                     Spacer(modifier = Modifier.width(15.dp))
@@ -98,12 +113,12 @@ fun ProductInCart(productCart: CartProduct) {
                         contentDescription = "Add",
                         modifier = Modifier
                             .size(64.dp)
-                            .clickable { /* Acción al aumentar cantidad */ }
-                            .padding(12.dp) // Espacio entre la imagen y el borde
+                            .clickable { quantity++ } // Aumentar cantidad
+                            .padding(12.dp)
                             .border(
                                 width = 1.dp,
                                 color = Color(0xFFF0F0F0),
-                                shape = RoundedCornerShape(8.dp) // Bordes redondeados
+                                shape = RoundedCornerShape(8.dp)
                             )
                             .padding(12.dp)
                     )
@@ -126,10 +141,10 @@ fun ProductInCart(productCart: CartProduct) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = productCart.price, // Precio del producto
+                    text = productCart.price,
                     fontSize = 16.sp,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold // Hace el texto más grueso (bold)
+                    color = textColor, // Cambiar color del texto según el modo
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
