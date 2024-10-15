@@ -6,9 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.grupo_6.ui.theme.Grupo_6Theme
 
 class MainActivity : ComponentActivity() {
@@ -67,9 +69,13 @@ fun AppNavigation(isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
                     toggleDarkMode = toggleDarkMode
                 )
             }
+            composable(
+                route = "categoryProducts/{categoryName}",
+                arguments = listOf(navArgument("categoryName") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
+                CategoryProductsScreen(navController = navController, categoryName = categoryName, isDarkMode = isDarkMode)
+            }
         }
     }
 }
-
-
-

@@ -27,7 +27,7 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
     val filteredCategories = categoryList.filter { it.name.contains(searchQuery, ignoreCase = true) }
 
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "explore", isDarkMode = isDarkMode,) }
+        bottomBar = { Footer(navController = navController, selectedRoute = "explore", isDarkMode = isDarkMode) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -44,7 +44,7 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
-            ExploreGrid(filteredCategories)
+            ExploreGrid(filteredCategories, navController)
         }
     }
 }
@@ -70,6 +70,7 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrai
                 }.size(24.dp),
                 painter = painterResource(id = R.drawable.ajustes),
                 contentDescription = "Adjust Icon",
+                //modifier = Modifier.size(24.dp)
             )
         },
         modifier = Modifier
@@ -85,7 +86,7 @@ fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrai
 }
 
 @Composable
-fun ExploreGrid(categories: List<Category>) {
+fun ExploreGrid(categories: List<Category>, navController: NavHostController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -95,18 +96,21 @@ fun ExploreGrid(categories: List<Category>) {
         itemsIndexed(categories) { index, category ->
             val backgroundColor = variedColors[index % variedColors.size]
             val borderColor = backgroundColor.darken(0.2f)
-            ExploreCard(category = category, backgroundColor = backgroundColor, borderColor = borderColor)
+            ExploreCard(category = category, backgroundColor = backgroundColor, borderColor = borderColor, navController = navController)
         }
     }
 }
 
 @Composable
-fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color) {
+fun ExploreCard(category: Category, backgroundColor: Color, borderColor: Color, navController: NavHostController) {
     Card(
         modifier = Modifier
             .width(174.5.dp)
             .height(189.11.dp)
-            .border(1.dp, borderColor, RoundedCornerShape(8.dp)),
+            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+            .clickable {
+                navController.navigate("categoryProducts/${category.name}")
+            },
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor
         )

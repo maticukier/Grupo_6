@@ -78,4 +78,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.9.0")
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation ("androidx.compose.material3:material3:1.0.0-alpha01")
 }
