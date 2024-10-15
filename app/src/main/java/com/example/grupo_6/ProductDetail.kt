@@ -49,27 +49,30 @@ import androidx.compose.foundation.lazy.items
 fun ProductDetailScreen(navController: NavHostController, isDarkMode: Boolean) {
     val poppins = FontFamily(Font(R.font.poppins_regular))
     val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
+    val backgroundColor = if (isDarkMode) Color.Black else Color.White
+    val textColor = if (isDarkMode) Color.White else Color.Black
+    val descriptionColor = if (isDarkMode) Color.LightGray else Color.Gray
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+    ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            Header(title = "My Cart", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
-            ProductDetail(textStyle)
-            Footer(navController = navController, selectedRoute = "shop", isDarkMode = isDarkMode,
-                modifier = Modifier.align(Alignment.CenterHorizontally))
+            ProductDetail(navController, textStyle, textColor, descriptionColor)
         }
     }
 }
 
 @Composable
-fun ProductDetail(textStyle: TextStyle) {
+fun ProductDetail(navController: NavHostController, textStyle: TextStyle, textColor: Color, descriptionColor: Color) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(Color.Transparent)
     ) {
         item {
             Row(
@@ -79,23 +82,23 @@ fun ProductDetail(textStyle: TextStyle) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { /* Volver */ }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                IconButton(onClick = { navController.navigate("shop") }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = textColor)
                 }
                 Text(
                     text = "Product Detail",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = textColor,
                     style = textStyle
                 )
                 IconButton(onClick = { /* Compartir */ }) {
-                    Icon(Icons.Default.Share, contentDescription = "Share")
+                    Icon(Icons.Default.Share, contentDescription = "Share", tint = textColor)
                 }
             }
 
             Image(
-                painter = painterResource(id = R.drawable.ginger),
+                painter = painterResource(id = R.drawable.biggapple),
                 contentDescription = "ginger",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,18 +113,31 @@ fun ProductDetail(textStyle: TextStyle) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                Text(
-                    text = "Natural Red Apple",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    style = textStyle
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    Text(
+                        text = "Natural Red Apple",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = textColor,
+                        style = textStyle
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.favorite),
+                        contentDescription = "Remove",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable { /* Acción al reducir cantidad */ }
+                            .padding(8.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "1kg, Price",
                     fontSize = 14.sp,
-                    color = Color.Gray,
+                    color = descriptionColor,
                     style = textStyle
                 )
             }
@@ -160,7 +176,7 @@ fun ProductDetail(textStyle: TextStyle) {
                             text = "1",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black,
+                            color = textColor,
                             style = textStyle
                         )
                     }
@@ -180,7 +196,7 @@ fun ProductDetail(textStyle: TextStyle) {
                     text = "$4.99",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = textColor,
                     style = textStyle
                 )
             }
@@ -188,19 +204,31 @@ fun ProductDetail(textStyle: TextStyle) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                Row {
+                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
                         text = "Product Detail",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        color = textColor,
                         style = textStyle
                     )
+                    Image(
+                        painter = painterResource(id = R.drawable.flechaabajo),
+                        contentDescription = "Remove",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable { /* Acción al reducir cantidad */ }
+                            .padding(8.dp)
+                    )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.",
                     fontSize = 12.sp,
-                    color = Color.Gray,
+                    color = descriptionColor,
                     style = textStyle
                 )
             }
@@ -209,8 +237,8 @@ fun ProductDetail(textStyle: TextStyle) {
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -218,17 +246,30 @@ fun ProductDetail(textStyle: TextStyle) {
                     text = "Nutritions",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = textColor,
                     style = textStyle
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.nutritional),
-                    contentDescription = "nutritional",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(8.dp),
-                    contentScale = ContentScale.FillWidth
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.nutritional),
+                        contentDescription = "nutritional",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(8.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.flecha),
+                        contentDescription = "nutritional",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .padding(8.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -244,21 +285,32 @@ fun ProductDetail(textStyle: TextStyle) {
                     text = "Review",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = textColor,
                     style = textStyle
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.stars),
-                    contentDescription = "stars",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(8.dp),
-                    contentScale = ContentScale.FillWidth
-                )
+                Row(){
+                    Image(
+                        painter = painterResource(id = R.drawable.stars),
+                        contentDescription = "stars",
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(8.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.flecha),
+                        contentDescription = "stars",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .padding(8.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
             }
 
             Button(
-                onClick = { /* Acción para agregar al carrito */ },
+                onClick = { navController.navigate("shop") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
