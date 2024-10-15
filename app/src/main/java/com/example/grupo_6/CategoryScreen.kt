@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryProductsScreen(navController: NavHostController, categoryName: String, isDarkMode: Boolean) {
@@ -34,6 +35,16 @@ fun CategoryProductsScreen(navController: NavHostController, categoryName: Strin
                 title = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text(categoryName)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.flechaatras),
+                            contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
+                            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(textColor)
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -66,8 +77,7 @@ fun getProductsByCategory(categoryName: String): List<Product> {
             Product("Apple & Grape Juice", "2L, Priceg", "$15.99", R.drawable.jugo),
             Product("Orange Juice", "2L, Priceg", "$15.99", R.drawable.orange),
             Product("Coca Cola Can", "335Ml, Priceg", "$4.99", R.drawable.coca),
-            Product("Pepsi", "335Ml, Priceg", "$4.99", R.drawable.pepsi),
-
+            Product("Pepsi", "335Ml, Priceg", "$4.99", R.drawable.pepsi)
         )
         "Fresh Fruits & Vegetable" -> listOf(
             Product("Organic Bananas", "7pcs, Priceg", "$4.99", R.drawable.banana),
@@ -75,26 +85,20 @@ fun getProductsByCategory(categoryName: String): List<Product> {
             Product("Bell Pepper Red", "1kg, Priceg", "$4.99", R.drawable.tomato),
             Product("Ginger", "250mg, Priceg", "$2.99", R.drawable.ginger)
         )
-
         "Dairy & Eggs" -> listOf(
             Product("Milk", "1L, Priceg", "$1.99", R.drawable.milk),
             Product("Eggs", "180gm, Priceg", "$2.99", R.drawable.onion),
             Product("Egg Pasta", "30mg, Priceg", "$15.99", R.drawable.eggpasta),
-                    Product("Egg Noddles", "30mg, Priceg", "$15.99", R.drawable.eggnoddles)
-
-
-
+            Product("Egg Noddles", "30mg, Priceg", "$15.99", R.drawable.eggnoddles)
         )
         "Bakery & Snacks" -> listOf(
             Product("Bread", "1 loaf, Priceg", "$3.99", R.drawable.bread),
-            Product("Chocolate Chip Cookies", "200g, Priceg", "$2.99", R.drawable.cookie),
+            Product("Chocolate Chip Cookies", "200g, Priceg", "$2.99", R.drawable.cookie)
         )
-
         "Cooking oil & ghee" -> listOf(
             Product("Olive Oil", "1L, Priceg", "$9.99", R.drawable.naturaloil),
             Product("Ghee", "500g, Priceg", "$6.99", R.drawable.ghee)
         )
-
         "Meat & Fish" -> listOf(
             Product("Chicken", "1kg, Priceg", "$12.99", R.drawable.chicken),
             Product("Salmon", "1kg, Priceg", "$19.99", R.drawable.salmon),
