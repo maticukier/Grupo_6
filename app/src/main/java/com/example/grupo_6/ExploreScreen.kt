@@ -52,7 +52,8 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
                         onTrailingIconClick = {
                             navController.navigate("filters")
                         },
-                        textStyle = textStyle
+                        textStyle = textStyle, navController = navController,
+                        isDarkMode = isDarkMode
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     ExploreGrid(filteredCategories, navController, textStyle)
@@ -71,39 +72,60 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(searchQuery: String, onSearchQueryChange: (String) -> Unit, onTrailingIconClick: () -> Unit, textStyle: TextStyle) {
+fun SearchBar(
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    onTrailingIconClick: () -> Unit,
+    textStyle: TextStyle,
+    navController: NavHostController,
+    isDarkMode: Boolean
+) {
+    val backgroundColor = if (isDarkMode) Color(0xFF303030) else Color(0xFFF0F0F0)
+    val iconTint = if (isDarkMode) Color.White else Color.Black
+    val placeholderColor = if (isDarkMode) Color.Gray else Color.DarkGray
+
     TextField(
         value = searchQuery,
         onValueChange = onSearchQueryChange,
-        placeholder = { Text("Search store", style = textStyle) },
+        placeholder = {
+            Text("Search store", style = textStyle.copy(color = placeholderColor))
+        },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.lupa),
                 contentDescription = "Search Icon",
-                modifier = Modifier.size(24.dp)
+                tint = iconTint,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable {
+                        // Navegar a la pantalla de búsqueda
+                        navController.navigate("searchScreen")
+                    }
             )
         },
         trailingIcon = {
             Icon(
-                modifier = Modifier.clickable {
-                    onTrailingIconClick()
-                }.size(24.dp),
                 painter = painterResource(id = R.drawable.ajustes),
-                contentDescription = "Adjust Icon"
+                contentDescription = "Adjust Icon",
+                tint = iconTint,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onTrailingIconClick() }
             )
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color(0xFFF0F0F0),
+            containerColor = backgroundColor,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
         ),
         shape = RoundedCornerShape(8.dp),
-        textStyle = textStyle
+        textStyle = textStyle.copy(color = iconTint)
     )
 }
+
 
 @Composable
 fun ExploreGrid(categories: List<Category>, navController: NavHostController, textStyle: TextStyle) {

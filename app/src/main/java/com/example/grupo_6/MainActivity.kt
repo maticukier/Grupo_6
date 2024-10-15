@@ -71,6 +71,9 @@ fun AppNavigation(isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
                     toggleDarkMode = toggleDarkMode
                 )
             }
+            composable("searchScreen") {
+                SearchScreen(navController = navController, isDarkMode = isDarkMode)
+            }
             composable(
                 route = "categoryProducts/{categoryName}",
                 arguments = listOf(navArgument("categoryName") { type = NavType.StringType })
