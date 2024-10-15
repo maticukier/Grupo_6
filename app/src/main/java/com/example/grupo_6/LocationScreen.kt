@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
+
 @Composable
 fun LocationScreen(navController: NavController) {
     val poppins = FontFamily(Font(R.font.poppins_regular))

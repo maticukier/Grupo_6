@@ -33,27 +33,40 @@ fun ExploreScreen(navController: NavHostController, isDarkMode: Boolean) {
     val filteredCategories = categoryList.filter { it.name.contains(searchQuery, ignoreCase = true) }
 
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "explore", isDarkMode = isDarkMode) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Header(title = "Explore", isDarkMode = isDarkMode)
-            Spacer(modifier = Modifier.height(8.dp))
-            SearchBar(
-                searchQuery,
-                onSearchQueryChange = { query -> searchQuery = query },
-                onTrailingIconClick = {
-                    navController.navigate("filters")
-                },
-                textStyle = textStyle
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            ExploreGrid(filteredCategories, navController, textStyle)
+        content = { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Header(title = "Explore", isDarkMode = isDarkMode)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SearchBar(
+                        searchQuery = searchQuery,
+                        onSearchQueryChange = { query -> searchQuery = query },
+                        onTrailingIconClick = {
+                            navController.navigate("filters")
+                        },
+                        textStyle = textStyle
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ExploreGrid(filteredCategories, navController, textStyle)
+                }
+
+                Footer(
+                    navController = navController,
+                    selectedRoute = "explore",
+                    isDarkMode = isDarkMode,
+                    modifier = Modifier.align(Alignment.BottomCenter) // Alinea el Footer al fondo
+                )
+            }
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

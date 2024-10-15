@@ -27,103 +27,145 @@ fun AccountScreen(navController: NavHostController, isDarkMode: Boolean, toggleD
     val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
 
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "account", isDarkMode = isDarkMode) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            Header(title = "Account", isDarkMode = isDarkMode)
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.profile),
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                )
-                Column(modifier = Modifier.padding(start = 16.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            "Afsar Hossen",
-                            style = textStyle.copy(
-                                fontWeight = FontWeight.Bold // Aplicar negrita
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Image(
-                            painter = painterResource(id = R.drawable.edit),
-                            contentDescription = "Edit",
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-
-                    Text(
-                        "imshuvo97@gmail.com",
-                        style = textStyle.copy(
-                            color = Color.Gray // Cambiar el color a gris
-                        )
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
-
-            AccountMenuItem("Orders", R.drawable.order, textStyle)
-            AccountMenuItem("My Details", R.drawable.details, textStyle)
-            AccountMenuItem("Delivery Address", R.drawable.delivery, textStyle)
-            AccountMenuItem("Payment Methods", R.drawable.payment, textStyle)
-            AccountMenuItem("Promo Card", R.drawable.promo, textStyle)
-            AccountMenuItem("Notifications", R.drawable.notification, textStyle)
-            AccountMenuItem("Help", R.drawable.help, textStyle)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Dark mode", style = textStyle)
-                CustomSwitch(checked = isDarkMode, onCheckedChange = { toggleDarkMode(it) })
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Button(
-                onClick = { navController.navigate("signup") }, // Navigate to SignUpScreen
+        content = { paddingValues ->
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.botonLog), contentColor = colorResource(id = R.color.Splash)),
-                shape = RoundedCornerShape(18.dp)
+                    .fillMaxSize()
+                    .padding(paddingValues)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.logout),
-                        contentDescription = "Logout",
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Log Out", style = textStyle)
+                    Header(title = "Account", isDarkMode = isDarkMode)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.profile),
+                            contentDescription = "Profile Picture",
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                        )
+                        Column(modifier = Modifier.padding(start = 16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    "Afsar Hossen",
+                                    style = textStyle.copy(
+                                        fontWeight = FontWeight.Bold // Aplicar negrita
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Image(
+                                    painter = painterResource(id = R.drawable.edit),
+                                    contentDescription = "Edit",
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+
+                            Text(
+                                "imshuvo97@gmail.com",
+                                style = textStyle.copy(
+                                    color = Color.Gray // Cambiar el color a gris
+                                )
+                            )
+                        }
                     }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                    HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+
+                    AccountMenuItem("Orders", R.drawable.order, textStyle)
+                    AccountMenuItem("My Details", R.drawable.details, textStyle)
+                    AccountMenuItem("Delivery Address", R.drawable.delivery, textStyle)
+                    AccountMenuItem("Payment Methods", R.drawable.payment, textStyle)
+                    AccountMenuItem("Promo Card", R.drawable.promo, textStyle)
+                    AccountMenuItem("Notifications", R.drawable.notification, textStyle)
+                    AccountMenuItem("Help", R.drawable.help, textStyle)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Dark mode", style = textStyle)
+                        CustomSwitch(checked = isDarkMode, onCheckedChange = { toggleDarkMode(it) })
+                    }
+
+                    Button(
+                        onClick = { navController.navigate("signup") }, // Navigate to SignUpScreen
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .padding(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.botonLog), contentColor = colorResource(id = R.color.Splash)),
+                        shape = RoundedCornerShape(18.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.logout),
+                                contentDescription = "Logout",
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Log Out", style = textStyle)
+                            }
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        Button(
+                            onClick = { navController.navigate("signup") }, // Navigate to SignUpScreen
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.botonLog), contentColor = colorResource(id = R.color.Splash)),
+                            shape = RoundedCornerShape(18.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.logout),
+                                    contentDescription = "Logout",
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text("Log Out", style = textStyle)
+                                }
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }// Para empujar los botones hacia el fondo
                 }
+
+
+
+
+                Footer(
+                    navController = navController,
+                    selectedRoute = "account",
+                    isDarkMode = isDarkMode,
+                    modifier = Modifier.align(Alignment.BottomCenter) // Alinea el Footer al fondo
+                )
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -184,6 +226,7 @@ fun AccountScreenPreview() {
     var isDarkMode by remember { mutableStateOf(false) }
     AccountScreen(navController = rememberNavController(), isDarkMode = isDarkMode, toggleDarkMode = { isDarkMode = it })
 }
+
 object Account {
     private var darkMode: Boolean = false // Estado inicial
 

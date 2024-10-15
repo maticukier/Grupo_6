@@ -34,49 +34,64 @@ fun FavouriteScreen(navController: NavHostController, isDarkMode: Boolean) {
     val showErrorScreen = remember { mutableStateOf(false) }
 
     Scaffold(
-        bottomBar = { Footer(navController = navController, selectedRoute = "favourite", isDarkMode = isDarkMode) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Header(title = "Favourites", isDarkMode = isDarkMode)
-            LazyColumn(
+        content = { innerPadding ->
+            Box(
                 modifier = Modifier
-                    .weight(1f) // Ensure LazyColumn takes available space
-                    .padding(16.dp)
+                    .fillMaxSize()
+                    .padding(innerPadding)
             ) {
-                items(FavouriteProducts) { product ->
-                    FavouriteProductItem(product, textStyle)
-                    HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
-                }
-            }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Header(title = "Favourites", isDarkMode = isDarkMode)
 
-            Button(
-                onClick = { showErrorScreen.value = true },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.9f)
-                    .height(70.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
-                shape = RoundedCornerShape(18.dp)
-            ) {
-                Text(
-                    "Add All To Cart",
-                    fontSize = 18.sp,
-                    fontFamily = poppins,
-                    fontWeight = FontWeight.ExtraBold,
-                    style = textStyle
+                    LazyColumn(
+                        modifier = Modifier
+                            .weight(1f) // Ensure LazyColumn takes available space
+                            .padding(16.dp)
+                    ) {
+                        items(FavouriteProducts) { product ->
+                            FavouriteProductItem(product, textStyle)
+                            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+                        }
+                    }
+
+                    Button(
+                        onClick = { showErrorScreen.value = true },
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth(0.9f)
+                            .height(70.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Splash)),
+                        shape = RoundedCornerShape(18.dp)
+                    ) {
+                        Text(
+                            "Add All To Cart",
+                            fontSize = 18.sp,
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.ExtraBold,
+                            style = textStyle
+                        )
+                    }
+                }
+
+                Footer(
+                    navController = navController,
+                    selectedRoute = "favourite",
+                    isDarkMode = isDarkMode,
+                    modifier = Modifier.align(Alignment.BottomCenter) // Align Footer to the bottom
                 )
             }
         }
-    }
+    )
 
     if (showErrorScreen.value) {
         ErrorScreen(navController = navController, onDismissRequest = { showErrorScreen.value = false })
     }
 }
+
 
 @Composable
 fun FavouriteProductItem(product: Product, textStyle: TextStyle) {

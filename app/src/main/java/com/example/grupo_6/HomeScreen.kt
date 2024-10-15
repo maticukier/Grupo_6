@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +28,11 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
@@ -34,36 +40,56 @@ fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
     val poppins = FontFamily(Font(R.font.poppins_regular))
     val textStyle = TextStyle(fontFamily = poppins, fontWeight = FontWeight.Normal)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 56.dp),
-            verticalArrangement = Arrangement.Top
-        ) {
-            item {
-                Header(title = "Shop", isDarkMode = isDarkMode)
-                Spacer(modifier = Modifier.height(8.dp))
-                CityTitle(cityName = "Dhaka, Banasree", textColor = textColor, textStyle = textStyle)
-                BannerImage()
-                Spacer(modifier = Modifier.height(16.dp))
-                SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = textColor, textStyle = textStyle)
-                ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController, textStyle = textStyle)
-                Spacer(modifier = Modifier.height(16.dp))
-                SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = textColor, textStyle = textStyle)
-                ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController, textStyle = textStyle)
-                Spacer(modifier = Modifier.height(16.dp))
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Header(title = "Shop", isDarkMode = isDarkMode)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = if (isDarkMode) Color.Black else Color.White // Color de fondo de la barra
+                )
+            )
+        },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(if (isDarkMode) Color.Black else Color.White)
+                    .padding(paddingValues)
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 56.dp),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        CityTitle(cityName = "Dhaka, Banasree", textColor = if (isDarkMode) Color.White else Color.Black, textStyle = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular))))
+                        BannerImage()
+                        Spacer(modifier = Modifier.height(16.dp))
+                        SectionTitle(title = "Exclusive Offer", actionTitle = "See All", textColor = if (isDarkMode) Color.White else Color.Black, textStyle = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular))))
+                        ProductList(products = exclusiveOfferProducts, isDarkMode = isDarkMode, navController = navController, textStyle = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular))))
+                        Spacer(modifier = Modifier.height(16.dp))
+                        SectionTitle(title = "Best Sellings", actionTitle = "See All", textColor = if (isDarkMode) Color.White else Color.Black, textStyle = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular))))
+                        ProductList(products = bestSellingProducts, isDarkMode = isDarkMode, navController = navController, textStyle = TextStyle(fontFamily = FontFamily(Font(R.font.poppins_regular))))
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                Footer(navController = navController, selectedRoute = "shop", isDarkMode = isDarkMode, modifier = Modifier.align(Alignment.BottomCenter))
             }
         }
-        Footer(navController = navController, selectedRoute = "shop", isDarkMode = isDarkMode, modifier = Modifier.align(Alignment.BottomCenter))
-    }
+    )
 }
 
-@Composable
+    @Composable
 fun CityTitle(cityName: String, textColor: Color, textStyle: TextStyle) {
     Box(
         modifier = Modifier
