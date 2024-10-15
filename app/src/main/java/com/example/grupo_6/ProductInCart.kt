@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.sp
 data class ProductCart(val name: String, val description: String, val price: String, val imageResId: Int)
 
 @Composable
-fun ProductInCart(productCart: ProductCart) {
+fun ProductInCart(productCart: CartProduct) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
