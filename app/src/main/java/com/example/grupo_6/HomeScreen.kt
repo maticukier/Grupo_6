@@ -34,7 +34,9 @@ fun HomeScreen(navController: NavHostController, isDarkMode: Boolean) {
             .background(backgroundColor) // Fondo dinámico según el modo oscuro
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp), // Add padding to the bottom to avoid overlap with the footer
             verticalArrangement = Arrangement.Top
         ) {
             item {
