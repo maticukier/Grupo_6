@@ -133,7 +133,7 @@ fun ProductCard(product: Product, cardBackgroundColor: Color, textColor: Color, 
                 navController.navigate("productDetail")
             },
             colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor // Color dinámico de la tarjeta
+            containerColor = cardBackgroundColor // Color dinámico de la tarjeta.png
         )
     ) {
         Box(

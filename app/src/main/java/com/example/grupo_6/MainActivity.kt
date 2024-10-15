@@ -41,6 +41,7 @@ fun AppNavigation(isDarkMode: Boolean, toggleDarkMode: (Boolean) -> Unit) {
             }
 
             composable("prelogin") { PreLoginScreen(navController) }
+            composable("checkout") { CheckoutScreen(navController) }
             composable("login") { LoginScreen(navController) }
             composable("signup") { SignUpScreen(navController) }
             composable("location") { LocationScreen(navController) }

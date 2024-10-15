@@ -8,6 +8,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,33 +21,34 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
+
 @Composable
 fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
-    // Definir colores dinámicos según el modo
+    // Estado para controlar si el CheckoutScreen se debe mostrar
+    var showCheckoutDialog by remember { mutableStateOf(false) }
+
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
     val textColor = if (isDarkMode) Color.White else Color.Black
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor) // Fondo dinámico
+            .background(backgroundColor)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            // Pasamos isDarkMode al Header
             Header(title = "My Cart", isDarkMode = isDarkMode)
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Productos en el carrito
             ProductsInCart.forEach { product ->
-                ProductInCart(productCart = product, textColor = textColor) // Pasar color dinámico
+                ProductInCart(productCart = product, textColor = textColor)
             }
 
             // Botón para ir al Checkout
             Button(
-                onClick = { /* Handle 'Go to Checkout' */ },
+                onClick = { showCheckoutDialog = true }, // Al presionar, se muestra el dialogo
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -54,15 +59,27 @@ fun CartScreen(navController: NavHostController, isDarkMode: Boolean) {
                 Text("Go to Checkout", color = Color.White, modifier = Modifier.padding(vertical = 8.dp))
             }
         }
-        // Footer adaptado para el modo oscuro
-        Footer(
-            navController = navController,
-            selectedRoute = "cart",
-            isDarkMode = isDarkMode,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
+
+        // Mostrar el diálogo de Checkout cuando showCheckoutDialog es true
+        if (showCheckoutDialog) {
+            CheckoutScreen(
+                navController = navController,
+                onDismissRequest = { showCheckoutDialog = false } // Cerrar el dialogo
+            )
+        }
+
+        // Solo mostrar el Footer si el CheckoutScreen no está visible
+        if (!showCheckoutDialog) {
+            Footer(
+                navController = navController,
+                selectedRoute = "cart",
+                isDarkMode = isDarkMode,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
     }
 }
+
 
 @Composable
 fun ProductInCart(productCart: CartProduct, textColor: Color) {
